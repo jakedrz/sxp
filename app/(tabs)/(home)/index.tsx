@@ -1,7 +1,7 @@
 import { Text, View, PlatformColor, Appearance } from "react-native";
 
 export default function Index() {
-    Appearance.setColorScheme("dark");
+    // Appearance.setColorScheme("dark");
   return (
     <View
       style={{

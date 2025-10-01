@@ -1,7 +1,7 @@
 import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
 
 export default function RootLayout() {
-  return (
+    return (
       <NativeTabs>
         <NativeTabs.Trigger name="index">
           <Label>Home</Label>
