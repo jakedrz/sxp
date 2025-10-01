@@ -1,15 +1,18 @@
-import { Text, View } from "react-native";
+import { Text, View, PlatformColor, Appearance } from "react-native";
 
 export default function Index() {
+    Appearance.setColorScheme("dark");
   return (
     <View
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: PlatformColor("systemBackground")
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text
+      style={{color: PlatformColor("label")}}>Edit app/index.tsx to edit this screen.</Text>
     </View>
   );
 }
