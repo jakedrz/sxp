@@ -1,7 +1,7 @@
 import { Text, View, PlatformColor, Appearance } from "react-native";
 
-export default function Index() {
-    // Appearance.setColorScheme("dark");
+export default function Home() {
+    Appearance.setColorScheme("dark");
   return (
     <View
       style={{
@@ -12,7 +12,7 @@ export default function Index() {
       }}
     >
       <Text
-      style={{color: PlatformColor("label")}}>Edit app/index.tsx to edit this screen.</Text>
+      style={{color: PlatformColor("label")}}>Edit app/home.tsx to edit this screen.</Text>
     </View>
   );
 }
