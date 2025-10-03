@@ -1,6 +1,7 @@
 import { Text, View, PlatformColor, Appearance } from "react-native";
 import {Pedometer} from 'expo-sensors';
 import {useState, useEffect} from 'react';
+import {Ring} from "@/app/components/HealthRings/Ring/Ring";
 
 export default function Home() {
     // Appearance.setColorScheme("dark");
@@ -30,7 +31,6 @@ export default function Home() {
 
     useEffect(() => {
         const subscription = subscribe();
-        return () => subscription && subscription.remove();
     }, []);
   return (
     <View
@@ -44,6 +44,7 @@ export default function Home() {
         <Text>Pedometer.isAvailableAsync(): {isPedometerAvailable}</Text>
         <Text>Steps taken in the last 24 hours: {pastStepCount}</Text>
         <Text>Walk! And watch this go up: {currentStepCount}</Text>
+        <Ring radius={80} bgColor={'gray'} gradientStartColor={'red'} gradientEndColor={'pink'} fill={100} />
     </View>
   );
 }
