@@ -9,9 +9,9 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 type Props = {
   radius: number;
-  bgColor: ColorValue;
-  gradientStartColor: ColorValue;
-  gradientEndColor: ColorValue;
+  bgColor: OpaqueColorValue;
+  gradientStartColor: OpaqueColorValue;
+  gradientEndColor: OpaqueColorValue;
   children?: ReactNode;
   fill?: number;
   icon?: React.ReactNode;
