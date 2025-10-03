@@ -8,11 +8,13 @@ export default function Home() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: PlatformColor("systemBackground")
+      //   backgroundColor: PlatformColor("systemBackground")
       }}
     >
       <Text
-      style={{color: PlatformColor("label")}}>Edit app/home.tsx to edit this screen.</Text>
+      // style={{color: PlatformColor("label")}}
+        >Edit app/home.tsx to edit this screen.
+        </Text>
     </View>
   );
 }
