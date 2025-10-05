@@ -58,7 +58,7 @@ export const Ring: React.FC<Props> = ({ radius, bgColor, gradientStartColor, gra
           animatedProps={animatedProps}
           strokeLinecap="round"
         />
-        <G transform={`translate(95 ${85 - radius})`}>
+        <G transform={`translate(180 ${85 - radius})`}>
           <G transform={`rotate(-90 ${radius} 0) rotate(180)`}>{icon}</G>
         </G>
       </G>
