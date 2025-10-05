@@ -38,7 +38,7 @@ export const Ring: React.FC<Props> = ({ radius, bgColor, gradientStartColor, gra
   }));
 
   return (
-    <Svg height="300" width="300" viewBox="0 0 180 180" style={{ position: 'absolute' }}>
+    <Svg height="300" width="300" viewBox="0 0 180 180" style={{  }}>
       <Defs>
         <LinearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
           <Stop offset="0%" stopColor={gradientEndColor as string} />

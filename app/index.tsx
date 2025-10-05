@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {Pedometer} from 'expo-sensors';
 import {useState, useEffect} from 'react';
 import {Ring} from "@/app/components/HealthRings/Ring/Ring";
+import {SymbolView} from 'expo-symbols';
 
 export default function Home() {
     Appearance.setColorScheme("dark");
@@ -52,7 +53,7 @@ export default function Home() {
         <Text style={styles.label}>Pedometer.isAvailableAsync(): {isPedometerAvailable}</Text>
         <Text style={styles.label}>Steps taken in the last 24 hours: {pastStepCount}</Text>
         <Text style={styles.label}>Walk! And watch this go up: {currentStepCount}</Text>
-        <Ring radius={80} bgColor={'#2b253c'} gradientStartColor={'#A18ADF'} gradientEndColor={'#BEAAF2'} fill={pastStepCount/100} />
+        <Ring radius={80} bgColor={'#2b253c'} gradientStartColor={'#A18ADF'} gradientEndColor={'#BEAAF2'} fill={7000/100} icon={<SymbolView name='figure.walk'/>}/>
     </SafeAreaView>
   );
 }
