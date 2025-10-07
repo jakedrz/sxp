@@ -3,7 +3,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {Pedometer} from 'expo-sensors';
 import {useState, useEffect} from 'react';
 import {Ring} from "@/app/components/HealthRings/Ring/Ring";
-import {SymbolView} from 'expo-symbols';
+import {SymbolView, SymbolWeight} from 'expo-symbols';
+
+const styles = StyleSheet.create({
+    label: {
+        color: PlatformColor("label"),
+    },
+    secondaryLabel: {
+        color: PlatformColor("secondaryLabel"),
+    }
+});
 
 export default function Home() {
     Appearance.setColorScheme("dark");
@@ -34,12 +43,7 @@ export default function Home() {
     useEffect(() => {
         const subscription = subscribe();
     }, []);
-    const styles = StyleSheet.create({
-        label: {
-            color: PlatformColor("label"),
-        }
-    });
-  // @ts-ignore
+
     return (
     <SafeAreaView
       style={{
@@ -49,11 +53,15 @@ export default function Home() {
       }}
     >
         <Title/>
+        <View style={{width:'100%', paddingHorizontal:20}}>
+            <Text style={[styles.secondaryLabel, {fontSize: 18}]}>Oct 6-27</Text>
+            <Text style={[styles.secondaryLabel, {fontSize: 18}]}>10k steps, 5 days/week</Text>
+        </View>
         {/*<Text style={styles.label}>Pedometer.isAvailableAsync(): {isPedometerAvailable}</Text>*/}
         {/*<Text style={styles.label}>Steps taken in the last 24 hours: {pastStepCount}</Text>*/}
         {/*<Text style={styles.label}>Walk! And watch this go up: {currentStepCount}</Text>*/}
-        <Ring radius={80} bgColor={'#2b253c'} gradientStartColor={'#A18ADF'} gradientEndColor={'#BEAAF2'} fill={pastStepCount/100} icon={<SymbolView name='figure.walk'/>}/>
-        <Text style={{color: PlatformColor('label'), fontSize: '24', width: '100%', paddingHorizontal: '20', paddingTop: '40'}}>Step Count</Text>
+        <Ring radius={80} bgColor={'#2b253c'} gradientStartColor={'#A18ADF'} gradientEndColor={'#BEAAF2'} fill={pastStepCount/100} icon={<SymbolView name='figure.walk' tintColor='black' weight={'bold'}/>}/>
+        <Text style={[styles.label, {fontSize: '24', width: '100%', paddingHorizontal: '20', paddingTop: '40'}]}>Step Count</Text>
         <Text style={{fontSize: '36', color: '#A18ADF', width: '100%', paddingHorizontal: '20'}}>{pastStepCount.toLocaleString()}/10,000</Text>
         <GameInfo/>
     </SafeAreaView>
@@ -63,7 +71,7 @@ export default function Home() {
 const Title = () => {
     return (
         <View style={{width:'100%'}}>
-            <Text style={{fontSize: 40, fontWeight: '600', color: PlatformColor("label"), margin: 20}}>Home</Text>
+            <Text style={[styles.label, {fontSize: 40, fontWeight: '600', margin: 20}]}>Goal Getter</Text>
         </View>
     )
 }
@@ -72,14 +80,14 @@ const GameInfo = () => {
     return (<View style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent:'space-between', paddingHorizontal:20, marginTop: 20}}>
 
         <InfoBit title='Your Bet' value='$40'/>
-        <InfoBit title='Game Pot' value='$14,000'/>
-        <InfoBit title='Players In Game' value='389' total='492'/>
+        <InfoBit title='Game Pot' value='$15,680'/>
+        <InfoBit title='Players In Game' value='315' total='392'/>
     </View>)
 }
 
 const InfoBit = ({title, value, total=undefined}) => {
     return (<View>
-        <Text style={{color: PlatformColor('label'), opacity: 1, fontWeight: '700', fontSize:'14' }}>{title.toUpperCase()}</Text>
-        <Text style={{color: PlatformColor('label'), fontSize:'24', opacity: .75}}>{value}{total ? ((<><Text style={{fontSize:'18'}}> of </Text>{total}</>)):null}</Text>
+        <Text style={[styles.label, {fontWeight: '700', fontSize:'14' }]}>{title.toUpperCase()}</Text>
+        <Text style={[styles.secondaryLabel, {fontSize:'24'}]}>{value}{total ? ((<><Text style={{color: PlatformColor("tertiaryLabel"), fontSize:'20'}}> of </Text>{total}</>)):null}</Text>
     </View>)
 }
