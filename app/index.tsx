@@ -53,8 +53,8 @@ export default function Home() {
         {/*<Text style={styles.label}>Steps taken in the last 24 hours: {pastStepCount}</Text>*/}
         {/*<Text style={styles.label}>Walk! And watch this go up: {currentStepCount}</Text>*/}
         <Ring radius={80} bgColor={'#2b253c'} gradientStartColor={'#A18ADF'} gradientEndColor={'#BEAAF2'} fill={pastStepCount/100} icon={<SymbolView name='figure.walk'/>}/>
-        <Text style={{color: PlatformColor('label'), fontSize: '24', width: '100%', paddingHorizontal: '40', paddingTop: '40'}}>Step Count</Text>
-        <Text style={{fontSize: '36', color: '#A18ADF', width: '100%', paddingHorizontal: '40'}}>{pastStepCount.toLocaleString()}/10,000</Text>
+        <Text style={{color: PlatformColor('label'), fontSize: '24', width: '100%', paddingHorizontal: '20', paddingTop: '40'}}>Step Count</Text>
+        <Text style={{fontSize: '36', color: '#A18ADF', width: '100%', paddingHorizontal: '20'}}>{pastStepCount.toLocaleString()}/10,000</Text>
         <GameInfo/>
     </SafeAreaView>
   );
@@ -69,11 +69,11 @@ const Title = () => {
 }
 
 const GameInfo = () => {
-    return (<View style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent:'space-between', paddingHorizontal:40, marginTop: 20}}>
+    return (<View style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent:'space-between', paddingHorizontal:20, marginTop: 20}}>
 
-        <InfoBit title='Bet' value='$40'/>
-        <InfoBit title='Pot' value='$14,000'/>
-        <InfoBit title='Eligible Players' value='389' total='492'/>
+        <InfoBit title='Your Bet' value='$40'/>
+        <InfoBit title='Game Pot' value='$14,000'/>
+        <InfoBit title='Players In Game' value='389' total='492'/>
     </View>)
 }
 
