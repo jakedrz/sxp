@@ -39,7 +39,6 @@ export default function Home() {
             color: PlatformColor("label"),
         }
     });
-    console.log(styles.label.color)
   // @ts-ignore
     return (
     <SafeAreaView
@@ -50,10 +49,12 @@ export default function Home() {
       }}
     >
         <Title/>
-        <Text style={styles.label}>Pedometer.isAvailableAsync(): {isPedometerAvailable}</Text>
-        <Text style={styles.label}>Steps taken in the last 24 hours: {pastStepCount}</Text>
-        <Text style={styles.label}>Walk! And watch this go up: {currentStepCount}</Text>
+        {/*<Text style={styles.label}>Pedometer.isAvailableAsync(): {isPedometerAvailable}</Text>*/}
+        {/*<Text style={styles.label}>Steps taken in the last 24 hours: {pastStepCount}</Text>*/}
+        {/*<Text style={styles.label}>Walk! And watch this go up: {currentStepCount}</Text>*/}
         <Ring radius={80} bgColor={'#2b253c'} gradientStartColor={'#A18ADF'} gradientEndColor={'#BEAAF2'} fill={7000/100} icon={<SymbolView name='figure.walk'/>}/>
+        <Text style={{color: PlatformColor('label'), fontSize: '24', width: '100%', paddingHorizontal: '40', paddingTop: '40'}}>Step Count</Text>
+        <Text style={{fontSize: '36', color: '#A18ADF', width: '100%', paddingHorizontal: '40'}}>{pastStepCount.toLocaleString()}/10,000</Text>
     </SafeAreaView>
   );
 }
