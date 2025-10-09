@@ -20,7 +20,7 @@ type Props = {
 
 export const Ring: React.FC<Props> = ({ radius, bgColor, gradientStartColor, gradientEndColor, fill = 0, icon }) => {
   const circleCircumference = 2 * Math.PI * radius;
-  const trackWidth = 19; // matches strokeWidth
+  const trackWidth = 25; // matches strokeWidth
   // Use shared value for animation
   const animatedOffset = useSharedValue(circleCircumference);
 
@@ -50,7 +50,7 @@ export const Ring: React.FC<Props> = ({ radius, bgColor, gradientStartColor, gra
             transform: [{ translateX: -12 }], // assuming icon is 24px wide
             zIndex: 1,
             backgroundColor: 'transparent',
-            padding: 2,
+            paddingTop: 4,
           }}
         >
           {icon}

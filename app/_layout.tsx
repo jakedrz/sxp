@@ -6,7 +6,9 @@ export const unstable_settings = {
 };
 export default function RootLayout() {
     return (
-      <NativeTabs>
+      <NativeTabs
+          iconColor={'#A18ADF'}
+      >
         <NativeTabs.Trigger name="index">
           <Label>Home</Label>
           <Icon sf="figure.walk" drawable="custom_android_drawable" />
