@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {Pedometer} from 'expo-sensors';
 import {useState, useEffect} from 'react';
 import {Ring} from "@/app/components/HealthRings/Ring/Ring";
+import {SkiaFitnessRing}  from './components/SkiaFitnessRing';
 import {SymbolView, SymbolWeight} from 'expo-symbols';
 
 const styles = StyleSheet.create({
@@ -60,8 +61,11 @@ export default function Home() {
         {/*<Text style={styles.label}>Pedometer.isAvailableAsync(): {isPedometerAvailable}</Text>*/}
         {/*<Text style={styles.label}>Steps taken in the last 24 hours: {pastStepCount}</Text>*/}
         {/*<Text style={styles.label}>Walk! And watch this go up: {currentStepCount}</Text>*/}
-        <View style={{paddingVertical: 40}}><Ring radius={80} bgColor={'#2b253c'} gradientStartColor={'#A18ADF'} gradientEndColor={'#BEAAF2'}
-                 fill={pastStepCount / 100} icon={<SymbolView name='figure.walk' tintColor='black' weight={'bold'}/>}/></View>
+        <View style={{paddingVertical: 40}}>
+            {/*<Ring radius={80} bgColor={'#2b253c'} gradientStartColor={'#A18ADF'} gradientEndColor={'#BEAAF2'}*/}
+            {/*     fill={pastStepCount / 100} icon={<SymbolView name='figure.walk' tintColor='black' weight={'bold'}/>}/>*/}
+            <SkiaFitnessRing percentage={150}/>
+        </View>
         <Text style={[styles.label, {fontSize: '24', width: '100%', paddingHorizontal: '20', paddingTop: '20'}]}>Step Count</Text>
         <Text style={{fontSize: '36', color: '#A18ADF', width: '100%', paddingHorizontal: '20'}}>{pastStepCount.toLocaleString()}/10,000</Text>
         <GameInfo/>
