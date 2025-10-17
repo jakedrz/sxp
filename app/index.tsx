@@ -5,6 +5,7 @@ import {useState, useEffect} from 'react';
 import {Ring} from "@/app/components/HealthRings/Ring/Ring";
 import {SkiaFitnessRing}  from './components/SkiaFitnessRing';
 import {SymbolView, SymbolWeight} from 'expo-symbols';
+import {Redirect} from 'expo-router';
 
 const styles = StyleSheet.create({
     label: {

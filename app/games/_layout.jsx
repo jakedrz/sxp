@@ -2,10 +2,10 @@ import { Stack } from 'expo-router';
 
 
 export const unstable_settings = {
-    initialRouteName: 'index',
+    initialRouteName: 'games/home',
 };
 
 
-export default function FeedLayout() {
+export default function GamesLayout() {
     return <Stack />;
 }

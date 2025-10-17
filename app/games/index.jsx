@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-export default function Games() {
+export default function Index() {
   return (
     <View
       style={{
