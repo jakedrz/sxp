@@ -52,6 +52,7 @@ export default function Home() {
         flex: 1,
         alignItems: "center",
         backgroundColor: PlatformColor("systemBackground"),
+          paddingTop: 55,
       }}
     >
         <Title/>
@@ -77,7 +78,7 @@ export default function Home() {
 const Title = () => {
     return (
         <View style={{width:'100%'}}>
-            <Text style={[styles.label, {fontSize: 40, fontWeight: '600', marginHorizontal: 20}]}>Goal Getter</Text>
+            <Text style={[styles.label, {fontSize: 34, fontWeight: '700', marginHorizontal: 20}]}>Goal Getter</Text>
         </View>
     )
 }

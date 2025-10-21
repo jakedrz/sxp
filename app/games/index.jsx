@@ -1,15 +1,10 @@
-import { Text, View } from "react-native";
+import {PlatformColor, ScrollView, Text, View} from "react-native";
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/games.tsx to edit this screen.</Text>
-    </View>
+        <ScrollView contentInsetAdjustmentBehavior="never"
+        style={{
+            backgroundColor: PlatformColor('systemBackground'),
+        }}><Text style={{fontSize: 87, color: PlatformColor('label')}}>Edit app/games.tsx to edit this screen.</Text></ScrollView>
   );
 }

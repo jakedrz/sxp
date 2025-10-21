@@ -1,6 +1,6 @@
 import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
 import { Stack } from 'expo-router';
-import {DynamicColorIOS} from "react-native";
+import {DynamicColorIOS, PlatformColor} from "react-native";
 export const unstable_settings = {
     initialRouteName: 'index',
 };
