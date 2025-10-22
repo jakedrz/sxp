@@ -1,34 +1,65 @@
-import {
-    PlatformColor,
-    ScrollView,
-    Text,
-    View,
-    Button,
-    Touchable,
-    TouchableHighlight,
-    DynamicColorIOS
-} from "react-native";
-import {SymbolView, SymbolWeight} from 'expo-symbols';
+import {DynamicColorIOS, PlatformColor, ScrollView, Text, TouchableHighlight, View} from "react-native";
+import {SymbolView} from 'expo-symbols';
 
 export default function Index() {
-  return (
+    return (
         <ScrollView contentInsetAdjustmentBehavior="never"
                     contentContainerStyle={{
                         alignItems: 'center',
                     }
                     }
-        style={{
-            backgroundColor: PlatformColor('systemBackground'),
-        }}>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
+                    style={{
+                        backgroundColor: PlatformColor('systemBackground'),
+                    }}>
+            <GameCard title='Fall Foliage Hike' entry={40} players={647} pot={'25,880'}/>
+            <GameCard title="Pumpkin' around" entry={40} players={647} pot={'25,880'}/>
+            <GameCard title='Fall Foliage Hike' entry={40} players={647} pot={'25,880'}/>
+            <GameCard title='Fall Foliage Hike' entry={40} players={647} pot={'25,880'}/>
         </ScrollView>
-  );
+    );
 }
 
-const GameCard = () => {
+function GameWagerInfoBit({symbolName, label}) {
+    return <View style={{flexDirection: "column", alignItems: "center", width: "33%"}}>
+        <SymbolView name={symbolName}
+                    tintColor={PlatformColor("tertiaryLabel")}
+                    size={32}/>
+        <Text style={{
+        color: PlatformColor("tertiaryLabel"),
+        marginTop: 4,
+        fontSize: 16,
+    }}>
+            {label}
+        </Text>
+    </View>;
+}
+
+function GameWagerInfoPot({value}) {
+    return <GameWagerInfoBit symbolName='trophy.circle' label={`$${value} pot`}/>;
+}
+
+function GameWagerInfoPlayers({value}) {
+    return <GameWagerInfoBit symbolName='person.2.circle' label={`${value} players`}/>;
+}
+
+function GameWagerInfoEntry({value}) {
+    return <GameWagerInfoBit symbolName='dollarsign.circle' label={`$${value} entry`}/>;
+}
+
+function GameWagerInfo({bet, players, pot}) {
+    return <View
+        style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between"
+        }}>
+        <GameWagerInfoEntry value={bet}/>
+        <GameWagerInfoPlayers value={players}/>
+        <GameWagerInfoPot value={pot}/>
+    </View>;
+}
+
+const GameCard = ({title, pot, entry, players}) => {
     return (
         <View style={{
             width: '90%',
@@ -37,14 +68,14 @@ const GameCard = () => {
             borderRadius: 20,
             padding: 20,
             marginVertical: 10,
-            borderCurve:'continuous'
+            borderCurve: 'continuous'
         }}>
             <Text style={{
                 fontSize: 24,
                 fontWeight: '700',
                 color: PlatformColor('label'),
             }}>
-                Fall Foliage Hike
+                {title}
             </Text>
             <Text>
                 <Text style={{
@@ -67,37 +98,7 @@ const GameCard = () => {
                 borderBottomWidth: 1,
                 marginVertical: 10,
             }}/>
-            <View
-            style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between'
-            }}>
-                <View style={{flexDirection:'column', alignItems: 'center',}}>
-                    <SymbolView name='dollarsign.circle'
-                    tintColor={PlatformColor('tertiaryLabel')}
-                    size={32}/><Text style={{
-                        color: PlatformColor('tertiaryLabel'),
-                    fontSize: 16,
-                    }}>$40 bet</Text>
-                </View>
-                <View style={{flexDirection:'column', alignItems: 'center'}}>
-                    <SymbolView name='person.3.fill'
-                                size={32}
-                                tintColor={PlatformColor('tertiaryLabel')}/><Text style={{
-                        color: PlatformColor('tertiaryLabel'),
-                        fontSize: 16,
-                    }}>647 Players</Text>
-                </View>
-                <View style={{flexDirection:'column', alignItems: 'center'}}>
-                    <SymbolView name='trophy.circle'
-                                size={32}
-                                tintColor={PlatformColor('tertiaryLabel')}/><Text style={{
-                                    fontSize: 16,
-                        color: PlatformColor('tertiaryLabel'),
-                    }}>$26,380 pot</Text>
-                </View>
-            </View>
+            <GameWagerInfo bet={entry} players={players} pot={pot}/>
             <View style={{marginTop: 20}}>
                 <JoinButton/>
             </View>
@@ -105,7 +106,7 @@ const GameCard = () => {
     )
 }
 const color = DynamicColorIOS({
-dark: '#A18ADF',
+    dark: '#A18ADF',
     highContrastDark: '#a891e7'
 })
 
@@ -114,19 +115,23 @@ const JoinButton = () => {
 
     return (
         <TouchableHighlight
-        underlayColor="white"
-        style={{borderRadius: 30, borderCurve:'continuous'}}
-        onPress={() => console.log('hi')}>
+            underlayColor="white"
+            style={{
+                overflow: 'hidden',
+                borderRadius: 30,
+                borderCurve: 'continuous',
+            }}
+            onPress={() => console.log('hi')}>
             <View style={{
-            backgroundColor:PlatformColor('tertiarySystemBackground'),
-                minHeight: 40,
+                backgroundColor: PlatformColor('tertiarySystemBackground'),
+                minHeight: 45,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius:30,
-                borderCurve:'continuous',
-        }}>
-            <Text style={{color: color,
-            fontSize: 18, fontWeight:500}}>Join Game</Text>
+            }}>
+                <Text style={{
+                    color: color,
+                    fontSize: 18, fontWeight: 500
+                }}>Join Game</Text>
             </View>
         </TouchableHighlight>
     )
