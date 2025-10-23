@@ -11,10 +11,10 @@ export default function Index() {
                     style={{
                         backgroundColor: PlatformColor('systemBackground'),
                     }}>
-            <GameCard title='Fall Foliage Hike' entry={40} players={647} pot={'25,880'}/>
             <GameCard title="Pumpkin' around" entry={40} players={647} pot={'25,880'}/>
-            <GameCard title='Fall Foliage Hike' entry={40} players={647} pot={'25,880'}/>
-            <GameCard title='Fall Foliage Hike' entry={40} players={647} pot={'25,880'}/>
+            <GameCard title="No Sweat November" entry={40} players={647} pot={'25,880'}/>
+            <GameCard title='Step & Destroy' entry={40} players={647} pot={'25,880'}/>
+            <GameCard title="Sleighin' it" entry={40} players={647} pot={'25,880'}/>
         </ScrollView>
     );
 }
