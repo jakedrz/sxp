@@ -6,6 +6,7 @@ import {Ring} from "@/app/components/HealthRings/Ring/Ring";
 import {SkiaFitnessRing}  from './components/SkiaFitnessRing';
 import {SymbolView, SymbolWeight} from 'expo-symbols';
 import {Redirect} from 'expo-router';
+import PageHeader from "./components/PageHeader"
 
 const styles = StyleSheet.create({
     label: {
@@ -15,6 +16,8 @@ const styles = StyleSheet.create({
         color: PlatformColor("secondaryLabel"),
     }
 });
+
+
 
 export default function Home() {
     Appearance.setColorScheme("dark");
@@ -48,41 +51,35 @@ export default function Home() {
 
     return (
     <SafeAreaView
-      style={{
-        flex: 1,
-        alignItems: "center",
-        backgroundColor: PlatformColor("systemBackground"),
-          paddingTop: 55,
-      }}
+        style={{
+            flex: 1,
+            alignItems: "center",
+            backgroundColor: PlatformColor("systemBackground"),
+            paddingTop: 55,
+        }}
     >
-        <Title/>
-        <View style={{width:'100%', paddingHorizontal:20}}>
-            <Text style={{ color: PlatformColor('tertiaryLabel'), fontSize: 16}}>Oct 6-27</Text>
-            <Text style={{ color: PlatformColor('tertiaryLabel'), fontSize: 16}}>10k steps, 5 days/week</Text>
-        </View>
-        {/*<Text style={styles.label}>Pedometer.isAvailableAsync(): {isPedometerAvailable}</Text>*/}
-        {/*<Text style={styles.label}>Steps taken in the last 24 hours: {pastStepCount}</Text>*/}
-        {/*<Text style={styles.label}>Walk! And watch this go up: {currentStepCount}</Text>*/}
+        <PageHeader title="Home" subtitle="Pumpkin' Around" gameInfo={`10k steps, 5 days/week
+Oct 6-27`}/>
         <View style={{paddingVertical: 40}}>
             <Ring radius={77} bgColor={'#2b253c'} gradientStartColor={'#A18ADF'} gradientEndColor={'#BEAAF2'}
-                 fill={pastStepCount / 100} icon={<SymbolView name='figure.walk' tintColor='black' weight={'bold'} size={32}/>}/>
+                  fill={pastStepCount / 100}
+                  icon={<SymbolView name='figure.walk' tintColor='black' weight={'bold'} size={32}/>}/>
             {/*<SkiaFitnessRing percentage={150}/>*/}
         </View>
-        <Text style={[styles.label, {fontSize: '24', width: '100%', paddingHorizontal: '20', paddingTop: '0'}]}>Step Count</Text>
-        <Text style={{fontSize: '36', color: '#A18ADF', width: '100%', paddingHorizontal: '20'}}>{pastStepCount.toLocaleString()}/10,000</Text>
+        <Text style={[styles.label, {fontSize: '24', width: '100%', paddingHorizontal: '20', paddingTop: '0'}]}>Step
+            Count</Text>
+        <Text style={{
+            fontSize: '36',
+            color: '#A18ADF',
+            width: '100%',
+            paddingHorizontal: '20'
+        }}>{pastStepCount.toLocaleString()}/10,000</Text>
         <GameInfo/>
     </SafeAreaView>
   );
 }
 
-const Title = () => {
-    return (
-        <View style={{width:'100%', paddingHorizontal: 20, marginBottom: 6}}>
-            <Text style={[styles.label, {fontSize: 34, fontWeight: '700'}]}>Home</Text>
-            <Text style={{color: PlatformColor('secondaryLabel'), fontSize: 18}}>Pumpkin' Around</Text>
-        </View>
-    )
-}
+
 
 const GameInfo = () => {
     return (<View style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent:'space-between', paddingHorizontal:20, marginTop: 20}}>
