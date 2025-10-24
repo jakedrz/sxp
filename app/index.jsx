@@ -2,11 +2,12 @@ import { Text, View, PlatformColor, Appearance, StyleSheet, DynamicColorIOS } fr
 import { SafeAreaView } from "react-native-safe-area-context";
 import {Pedometer} from 'expo-sensors';
 import {useState, useEffect} from 'react';
-import {Ring} from "@/app/components/HealthRings/Ring/Ring";
 import {SkiaFitnessRing}  from './components/SkiaFitnessRing';
 import {SymbolView, SymbolWeight} from 'expo-symbols';
 import {Redirect} from 'expo-router';
-import PageHeader from "./components/PageHeader"
+import PageHeader from "./components/PageHeader";
+import StepInformation from "./components/StepInformation";
+import {colors} from './constants/colors';
 
 const styles = StyleSheet.create({
     label: {
@@ -16,8 +17,6 @@ const styles = StyleSheet.create({
         color: PlatformColor("secondaryLabel"),
     }
 });
-
-
 
 export default function Home() {
     Appearance.setColorScheme("dark");
@@ -54,26 +53,13 @@ export default function Home() {
         style={{
             flex: 1,
             alignItems: "center",
-            backgroundColor: PlatformColor("systemBackground"),
+            backgroundColor: colors.background.primary,
             paddingTop: 55,
         }}
     >
         <PageHeader title="Home" subtitle="Pumpkin' Around" gameInfo={`10k steps, 5 days/week
 Oct 6-27`}/>
-        <View style={{paddingVertical: 40}}>
-            <Ring radius={77} bgColor={'#2b253c'} gradientStartColor={'#A18ADF'} gradientEndColor={'#BEAAF2'}
-                  fill={pastStepCount / 100}
-                  icon={<SymbolView name='figure.walk' tintColor='black' weight={'bold'} size={32}/>}/>
-            {/*<SkiaFitnessRing percentage={150}/>*/}
-        </View>
-        <Text style={[styles.label, {fontSize: '24', width: '100%', paddingHorizontal: '20', paddingTop: '0'}]}>Step
-            Count</Text>
-        <Text style={{
-            fontSize: '36',
-            color: '#A18ADF',
-            width: '100%',
-            paddingHorizontal: '20'
-        }}>{pastStepCount.toLocaleString()}/10,000</Text>
+        <StepInformation pastStepCount={pastStepCount}/>
         <GameInfo/>
     </SafeAreaView>
   );

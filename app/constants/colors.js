@@ -1,10 +1,5 @@
 import {PlatformColor, DynamicColorIOS} from "react-native";
 export const colors = {
-    label: {
-        primary: PlatformColor('label'),
-        secondary: PlatformColor('secondaryLabel'),
-        tertiary: PlatformColor('tertiaryLabel')
-    },
     brand: {
         dynamic: DynamicColorIOS({
             light: '#A18ADF',
@@ -15,5 +10,14 @@ export const colors = {
         base: '#A18ADF',
         lighter: '#BEAAF2',
         dimmed: '#2b253c'
+    },
+    label: {
+        primary: PlatformColor('label'),
+        secondary: PlatformColor('secondaryLabel'),
+        tertiary: PlatformColor('tertiaryLabel')
+    },
+    background: {
+        primary: PlatformColor('systemBackground'),
+        secondary: PlatformColor('secondarySystemBackground')
     }
 }
