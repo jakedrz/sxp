@@ -57,8 +57,8 @@ export default function Home() {
     >
         <Title/>
         <View style={{width:'100%', paddingHorizontal:20}}>
-            <Text style={[styles.secondaryLabel, {fontSize: 18}]}>Oct 6-27</Text>
-            <Text style={[styles.secondaryLabel, {fontSize: 18}]}>10k steps, 5 days/week</Text>
+            <Text style={{ color: PlatformColor('tertiaryLabel'), fontSize: 16}}>Oct 6-27</Text>
+            <Text style={{ color: PlatformColor('tertiaryLabel'), fontSize: 16}}>10k steps, 5 days/week</Text>
         </View>
         {/*<Text style={styles.label}>Pedometer.isAvailableAsync(): {isPedometerAvailable}</Text>*/}
         {/*<Text style={styles.label}>Steps taken in the last 24 hours: {pastStepCount}</Text>*/}
@@ -68,7 +68,7 @@ export default function Home() {
                  fill={pastStepCount / 100} icon={<SymbolView name='figure.walk' tintColor='black' weight={'bold'} size={32}/>}/>
             {/*<SkiaFitnessRing percentage={150}/>*/}
         </View>
-        <Text style={[styles.label, {fontSize: '24', width: '100%', paddingHorizontal: '20', paddingTop: '20'}]}>Step Count</Text>
+        <Text style={[styles.label, {fontSize: '24', width: '100%', paddingHorizontal: '20', paddingTop: '0'}]}>Step Count</Text>
         <Text style={{fontSize: '36', color: '#A18ADF', width: '100%', paddingHorizontal: '20'}}>{pastStepCount.toLocaleString()}/10,000</Text>
         <GameInfo/>
     </SafeAreaView>
@@ -77,8 +77,9 @@ export default function Home() {
 
 const Title = () => {
     return (
-        <View style={{width:'100%'}}>
-            <Text style={[styles.label, {fontSize: 34, fontWeight: '700', marginHorizontal: 20}]}>Goal Getter</Text>
+        <View style={{width:'100%', paddingHorizontal: 20, marginBottom: 6}}>
+            <Text style={[styles.label, {fontSize: 34, fontWeight: '700'}]}>Home</Text>
+            <Text style={{color: PlatformColor('secondaryLabel'), fontSize: 18}}>Pumpkin' Around</Text>
         </View>
     )
 }
