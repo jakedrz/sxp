@@ -18,6 +18,7 @@ export const colors = {
     },
     background: {
         primary: PlatformColor('systemBackground'),
-        secondary: PlatformColor('secondarySystemBackground')
+        secondary: PlatformColor('secondarySystemBackground'),
+        tertiary: PlatformColor('tertiarySystemBackground')
     }
 }

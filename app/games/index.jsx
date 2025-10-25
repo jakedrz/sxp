@@ -1,5 +1,7 @@
 import {DynamicColorIOS, PlatformColor, ScrollView, Text, TouchableHighlight, View} from "react-native";
+import {colors} from "../constants/colors";
 import {SymbolView} from 'expo-symbols';
+import {Button} from "../components/Button";
 
 export default function Index() {
     return (
@@ -11,7 +13,7 @@ export default function Index() {
                     style={{
                         backgroundColor: PlatformColor('systemBackground'),
                     }}>
-            <GameCard title="Pumpkin' around" entry={40} players={647} pot={'25,880'}/>
+            <GameCard title="Pumpkin' Around" entry={40} players={647} pot={'25,880'}/>
             <GameCard title="No Sweat November" entry={40} players={647} pot={'25,880'}/>
             <GameCard title='Step & Destroy' entry={40} players={647} pot={'25,880'}/>
             <GameCard title="Sleighin' it" entry={40} players={647} pot={'25,880'}/>
@@ -100,7 +102,7 @@ const GameCard = ({title, pot, entry, players}) => {
             }}/>
             <GameWagerInfo bet={entry} players={players} pot={pot}/>
             <View style={{marginTop: 20}}>
-                <JoinButton/>
+                <Button onPress={() => {}} label='Join Game'/>
             </View>
         </View>
     )
@@ -111,28 +113,3 @@ const color = DynamicColorIOS({
 })
 
 
-const JoinButton = () => {
-
-    return (
-        <TouchableHighlight
-            underlayColor="white"
-            style={{
-                overflow: 'hidden',
-                borderRadius: 30,
-                borderCurve: 'continuous',
-            }}
-            onPress={() => console.log('hi')}>
-            <View style={{
-                backgroundColor: PlatformColor('tertiarySystemBackground'),
-                minHeight: 45,
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <Text style={{
-                    color: color,
-                    fontSize: 18, fontWeight: 500
-                }}>Join Game</Text>
-            </View>
-        </TouchableHighlight>
-    )
-}
