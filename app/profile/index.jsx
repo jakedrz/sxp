@@ -11,7 +11,9 @@ export default function Index() {
                 backgroundColor: colors.background.primary
             }}
         >
-            <Text style={{color: colors.label.primary}}>Edit app/profile.tsx to edit this screen.</Text>
+            <View style={{borderRadius: 20, padding: 20, backgroundColor: colors.background.secondary, borderCurve: 'continuous'}}>
+
+            </View>
         </View>
     );
 }
