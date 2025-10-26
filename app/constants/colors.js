@@ -20,5 +20,6 @@ export const colors = {
         primary: PlatformColor('systemBackground'),
         secondary: PlatformColor('secondarySystemBackground'),
         tertiary: PlatformColor('tertiarySystemBackground')
-    }
+    },
+    separator: PlatformColor('opaqueSeparator')
 }

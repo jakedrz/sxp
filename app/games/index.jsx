@@ -11,7 +11,7 @@ export default function Index() {
                     }
                     }
                     style={{
-                        backgroundColor: PlatformColor('systemBackground'),
+                        backgroundColor: colors.background.primary,
                     }}>
             <GameCard title="Pumpkin' Around" entry={40} players={647} pot={'25,880'}/>
             <GameCard title="No Sweat November" entry={40} players={647} pot={'25,880'}/>
@@ -24,10 +24,10 @@ export default function Index() {
 function GameWagerInfoBit({symbolName, label}) {
     return <View style={{flexDirection: "column", alignItems: "center", width: "33%"}}>
         <SymbolView name={symbolName}
-                    tintColor={PlatformColor("tertiaryLabel")}
+                    tintColor={colors.label.tertiary}
                     size={32}/>
         <Text style={{
-        color: PlatformColor("tertiaryLabel"),
+        color: colors.label.tertiary,
         marginTop: 4,
         fontSize: 16,
     }}>
@@ -66,7 +66,7 @@ const GameCard = ({title, pot, entry, players}) => {
         <View style={{
             width: '90%',
             minHeight: '200',
-            backgroundColor: PlatformColor('secondarySystemBackground'),
+            backgroundColor: colors.background.secondary,
             borderRadius: 20,
             padding: 20,
             marginVertical: 10,
@@ -75,7 +75,7 @@ const GameCard = ({title, pot, entry, players}) => {
             <Text style={{
                 fontSize: 24,
                 fontWeight: '700',
-                color: PlatformColor('label'),
+                color: colors.label.primary,
             }}>
                 {title}
             </Text>
@@ -83,20 +83,20 @@ const GameCard = ({title, pot, entry, players}) => {
                 <Text style={{
                     fontSize: 16,
                     fontWeight: '500',
-                    color: PlatformColor('secondaryLabel'),
+                    color: colors.label.secondary,
                 }}>
                     10K steps, 5 days/week
                 </Text>
             </Text>
             <Text style={{
                 fontSize: 16,
-                color: PlatformColor('tertiaryLabel'),
+                color: colors.label.tertiary,
             }}>
                 Oct 20 - Nov 23 | 5 Week Game
             </Text>
 
             <View style={{
-                borderColor: PlatformColor('opaqueSeparator'),
+                borderColor: colors.separator,
                 borderBottomWidth: 1,
                 marginVertical: 10,
             }}/>
@@ -107,9 +107,5 @@ const GameCard = ({title, pot, entry, players}) => {
         </View>
     )
 }
-const color = DynamicColorIOS({
-    dark: '#A18ADF',
-    highContrastDark: '#a891e7'
-})
 
 
