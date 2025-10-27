@@ -2,6 +2,7 @@ import {DynamicColorIOS, PlatformColor, ScrollView, Text, TouchableHighlight, Vi
 import {colors} from "../constants/colors";
 import {SymbolView} from 'expo-symbols';
 import {Button} from "../components/Button";
+import {CardTitle} from "../components/CardTitle";
 
 export default function Index() {
     return (
@@ -72,13 +73,7 @@ const GameCard = ({title, pot, entry, players}) => {
             marginVertical: 10,
             borderCurve: 'continuous'
         }}>
-            <Text style={{
-                fontSize: 24,
-                fontWeight: '700',
-                color: colors.label.primary,
-            }}>
-                {title}
-            </Text>
+            <CardTitle text={title}/>
             <Text>
                 <Text style={{
                     fontSize: 16,
