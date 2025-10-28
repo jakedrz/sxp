@@ -1,9 +1,9 @@
 import {Text} from 'react-native';
 import {colors} from "../constants/colors";
 
-export const CardTitle = ({text}) =>
+export const CardTitle = ({text, fontSize=24}) =>
     (<Text style={{
-        fontSize: 24,
+        fontSize: fontSize,
         fontWeight: '600',
         color: colors.label.primary
     }}>

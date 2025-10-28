@@ -1,11 +1,11 @@
 import {colors} from "../constants/colors";
 import {Text, TouchableHighlight, View} from "react-native";
 
-export const Button = ({label, textColor=colors.brand.dynamic, onPress, backgroundColor=colors.background.tertiary}) => {
+export const Button = ({label, textColor=colors.brand.dynamic, onPress, backgroundColor=colors.background.tertiary, underlayColor="white"}) => {
 
     return (
         <TouchableHighlight
-            underlayColor="white"
+            underlayColor={underlayColor}
             style={{
                 overflow: 'hidden',
                 borderRadius: 30,
