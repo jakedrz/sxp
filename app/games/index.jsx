@@ -3,8 +3,27 @@ import {colors} from "../constants/colors";
 import {SymbolView} from 'expo-symbols';
 import {Button} from "../components/Button";
 import {CardTitle} from "../components/CardTitle";
+import {useQuery} from '@tanstack/react-query';
+import {supabase} from '../utils/supabase'
 
 export default function Index() {
+    // const gamesQuery = useQuery(
+    //     {queryKey: ['games'], queryFn: async () => {
+    //         supabase.from('games').select('*').order('created_at', {ascending: false});
+    //         }})
+    // if (!gamesQuery.isPending)
+    // {
+    //     console.log(gamesQuery);
+    // }
+
+    async function getGames() {
+        let {data: games, error} = await supabase
+            .from('games')
+            .select('title')
+        return games;
+    }
+
+    console.log(getGames());
     return (
         <ScrollView contentInsetAdjustmentBehavior="never"
                     contentContainerStyle={{
@@ -14,6 +33,7 @@ export default function Index() {
                     style={{
                         backgroundColor: colors.background.primary,
                     }}>
+
             <GameCard title="Pumpkin' Around" entry={40} players={647} pot={'25,880'}/>
             <GameCard title="No Sweat November" entry={40} players={647} pot={'25,880'}/>
             <GameCard title='Step & Destroy' entry={40} players={647} pot={'25,880'}/>
