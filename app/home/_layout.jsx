@@ -6,6 +6,6 @@ export const unstable_settings = {
 };
 
 
-export default function FeedLayout() {
+export default function HomeLayout() {
     return <Stack />;
 }
