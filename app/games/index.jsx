@@ -32,6 +32,7 @@ export default function Index() {
         <ScrollView contentInsetAdjustmentBehavior="never"
                     contentContainerStyle={{
                         alignItems: 'center',
+                        paddingHorizontal: 16,
                     }
                     }
                     style={{
@@ -120,24 +121,25 @@ const GameCard = ({title, pot, entry, players, startDate, endDate}) => {
             month: endDateStringMonth,
             day: "numeric",
         });
-        return `${startDateFormattedString} - ${endDateFormattedString}`;
+        return `${startDateFormattedString}-${endDateFormattedString}`;
     }
 
     const getWeekDifference = (start, end) => {
         return (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24 * 7);
     }
+    const daysUntilStart = Math.floor((new Date(startDate) - new Date()) / (1000 * 60 * 60 * 24));
 
     return (
         <View style={{
-            width: '90%',
             minHeight: '200',
             backgroundColor: colors.background.secondary,
             borderRadius: 20,
-            padding: 20,
+            padding: 22,
             marginVertical: 10,
             borderCurve: 'continuous'
         }}>
-            <Text style={{color:colors.label.secondary, fontWeight:700, fontSize:'12'}}>STARTS IN 3 DAYS</Text>
+
+            {(daysUntilStart < 7) ? (<Text style={{color: colors.label.tertiary, fontWeight: 700, fontSize: '12'}}>STARTS IN {daysUntilStart} DAYS</Text>) : null}
             <CardTitle text={title} fontSize={17}/>
             <Text style={{
                 fontSize: 20,
