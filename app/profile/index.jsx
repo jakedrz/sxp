@@ -5,9 +5,29 @@ import {Button} from "../components/Button";
 import {SafeAreaView} from "react-native-safe-area-context";
 import * as AppleAuthentication from 'expo-apple-authentication';
 import {supabase} from "../utils/supabase";
+import {useEffect, useState} from "react";
 export default function Index() {
-    const AUTHED = false;
-    if(AUTHED) {
+    const [session, setSession] = useState(null)
+    useEffect(() => {
+        const fetchSession = async () => {
+            const {
+                data: { session },
+            } = await supabase.auth.getSession()
+            setSession(session)
+            console.log(session);
+        }
+
+        fetchSession()
+
+        // subscribe to auth state changes
+        const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session)
+        })
+
+        return () => subscription.subscription.unsubscribe()
+    }, [])
+
+    if(session) {
         return (
             <SafeAreaView
                 style={{
@@ -18,7 +38,7 @@ export default function Index() {
                 }}>
                 <View style={{flex: 1}}>
                     <Text style={{color: colors.label.primary}}>
-                        jake.drzewiecki@gmail.com
+                        {session.user.email}
                     </Text>
                 </View>
                 <View
@@ -59,7 +79,7 @@ export default function Index() {
                     buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
                     buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
                     cornerRadius={30}
-                    style={{height: 45, width: '100%'}}
+                    style={{height: 60, width: '90%'}}
                     onPress={async () => {
                         try {
                             const credential = await AppleAuthentication.signInAsync({
