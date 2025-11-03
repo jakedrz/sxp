@@ -5,6 +5,7 @@ import {Button} from "../components/Button";
 import {CardTitle} from "../components/CardTitle";
 import {useQuery} from '@tanstack/react-query';
 import {supabase} from '../utils/supabase'
+import * as Linking from 'expo-linking';
 
 export default function Index() {
     const gamesQuery = useQuery({
@@ -165,8 +166,10 @@ const GameCard = ({title, pot, entry, players, startDate, endDate}) => {
             }}/>
             <GameWagerInfo bet={entry} players={players} pot={pot}/>
             <View style={{marginTop: 20}}>
-                <Button onPress={() => {
-                    supabase.functions.invoke('create-checkout-session');
+                <Button onPress={async () => {
+                    const data = await supabase.functions.invoke('create-checkout-session');
+                    console.log(data.data.url);
+                    Linking.openURL(data.data.url);
                 }} label='Join Game'/>
             </View>
         </View>
