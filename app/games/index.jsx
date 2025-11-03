@@ -165,7 +165,9 @@ const GameCard = ({title, pot, entry, players, startDate, endDate}) => {
             }}/>
             <GameWagerInfo bet={entry} players={players} pot={pot}/>
             <View style={{marginTop: 20}}>
-                <Button onPress={() => {}} label='Join Game'/>
+                <Button onPress={() => {
+                    supabase.functions.invoke('create-checkout-session');
+                }} label='Join Game'/>
             </View>
         </View>
     )
