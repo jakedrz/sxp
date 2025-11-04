@@ -65,7 +65,7 @@ export default function Index() {
                                                                              backgroundColor={colors.label.primary}
                                                                              underlayColor={colors.background.primary}
                                                                              textColor={colors.background.primary}
-                                                                             onPress={() => {
+                                                                             onPress={() => {supabase.auth.signOut()
                                                                              }}/></View>
                 </View>
             </SafeAreaView>
