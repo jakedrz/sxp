@@ -6,7 +6,10 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import * as AppleAuthentication from 'expo-apple-authentication';
 import {supabase} from "../utils/supabase";
 import {useEffect, useState} from "react";
+import {useQuery, useQueryClient } from "@tanstack/react-query";
 export default function Index() {
+    const queryClient = useQueryClient();
+    queryClient.invalidateQueries();
     const [session, setSession] = useState(null)
     useEffect(() => {
         const fetchSession = async () => {
@@ -25,7 +28,39 @@ export default function Index() {
         })
 
         return () => subscription.subscription.unsubscribe()
-    }, [])
+    }, []);
+
+    const ledgerQuery = useQuery({
+        queryKey: ['ledger'],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from('points_ledger')
+                .select('created_at, transaction_type, amount, currency, description')
+                .eq('user_id', session.user.id)
+                .order('created_at', { ascending: true });
+            if (error) throw error;
+            let runningBalance = 0;
+            return data.map((x) => {
+                runningBalance += x.amount;
+                return {
+                    created_at: x.created_at,
+                    transaction_type: x.transaction_type,
+                    amount: x.amount,
+                    currency: x.currency,
+                    description: x.description,
+                    runningBalance: runningBalance
+                }
+            });
+        },
+    });
+
+    if (ledgerQuery.isLoading) {
+        console.log('balance loading...');
+    } else if (ledgerQuery.isError) {
+        console.log('balance error', ledgerQuery.error);
+    } else {
+        console.log('balance loaded', ledgerQuery.data);
+    }
 
     if(session) {
         return (
@@ -58,7 +93,7 @@ export default function Index() {
                         width: "90%"
                     }}>
                         <CardTitle text="Account Balance" fontSize={18}/>
-                        <Text style={{fontSize: '48', color: colors.label.primary, marginTop: 5}}>12,400 pts</Text>
+                        <Text style={{fontSize: '48', color: colors.label.primary, marginTop: 5}}>{ledgerQuery.loading ? "---" : ledgerQuery.data?.at(-1).runningBalance.toLocaleString()} pts</Text>
                         <Text style={{fontSize: '36', color: colors.label.secondary}}>≈ $124.00</Text>
                     </View>
                     <View style={{width: '90%', marginVertical: 40}}><Button label="Request Payout"
