@@ -93,7 +93,7 @@ export default function Index() {
                         width: "90%"
                     }}>
                         <CardTitle text="Account Balance" fontSize={18}/>
-                        <Text style={{fontSize: '48', color: colors.label.primary, marginTop: 5}}>{ledgerQuery.loading ? "---" : ledgerQuery.data?.at(-1).runningBalance.toLocaleString()} pts</Text>
+                        <Text style={{fontSize: '48', color: colors.label.primary, marginTop: 5}}>{ledgerQuery.loading ? "---" : ledgerQuery.data?.at(-1)?.runningBalance.toLocaleString()} pts</Text>
                         <Text style={{fontSize: '36', color: colors.label.secondary}}>≈ $124.00</Text>
                     </View>
                     <View style={{width: '90%', marginVertical: 40}}><Button label="Request Payout"
