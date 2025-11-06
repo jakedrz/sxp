@@ -140,7 +140,12 @@ const GameCard = ({title, pot, entry, players, startDate, endDate}) => {
             borderCurve: 'continuous'
         }}>
 
-            {(daysUntilStart < 7) ? (<Text style={{color: colors.label.tertiary, fontWeight: 700, fontSize: '12'}}>STARTS IN {daysUntilStart} DAYS</Text>) : null}
+            {   (daysUntilStart >= 0)
+                    ? ((daysUntilStart < 7)
+                        ? (<Text style={{color: colors.label.tertiary, fontWeight: 700, fontSize: '12'}}>STARTS IN {daysUntilStart} DAYS</Text>)
+                        : null)
+                    : (<Text style={{color: colors.label.tertiary, fontWeight: 700, fontSize: '12'}}>STARTED {Math.abs(daysUntilStart)} DAYS AGO</Text>)
+            }
             <CardTitle text={title} fontSize={17}/>
             <Text style={{
                 fontSize: 20,
