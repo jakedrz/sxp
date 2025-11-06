@@ -7,6 +7,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import {supabase} from "../utils/supabase";
 import {useEffect, useState} from "react";
 import {useQuery, useQueryClient } from "@tanstack/react-query";
+import {BalanceCard} from "../components/BalanceCard";
 export default function Index() {
     const queryClient = useQueryClient();
     queryClient.invalidateQueries();
@@ -29,38 +30,6 @@ export default function Index() {
 
         return () => subscription.subscription.unsubscribe()
     }, []);
-
-    const ledgerQuery = useQuery({
-        queryKey: ['ledger'],
-        queryFn: async () => {
-            const { data, error } = await supabase
-                .from('points_ledger')
-                .select('created_at, transaction_type, amount, currency, description')
-                .eq('user_id', session.user.id)
-                .order('created_at', { ascending: true });
-            if (error) throw error;
-            let runningBalance = 0;
-            return data.map((x) => {
-                runningBalance += x.amount;
-                return {
-                    created_at: x.created_at,
-                    transaction_type: x.transaction_type,
-                    amount: x.amount,
-                    currency: x.currency,
-                    description: x.description,
-                    runningBalance: runningBalance
-                }
-            });
-        },
-    });
-
-    if (ledgerQuery.isLoading) {
-        console.log('balance loading...');
-    } else if (ledgerQuery.isError) {
-        console.log('balance error', ledgerQuery.error);
-    } else {
-        console.log('balance loaded', ledgerQuery.data);
-    }
 
     if(session) {
         return (
@@ -85,17 +54,7 @@ export default function Index() {
                         width: '90%'
                     }}
                 >
-                    <View style={{
-                        borderRadius: 20,
-                        padding: 20,
-                        backgroundColor: colors.background.secondary,
-                        borderCurve: 'continuous',
-                        width: "90%"
-                    }}>
-                        <CardTitle text="Account Balance" fontSize={18}/>
-                        <Text style={{fontSize: '48', color: colors.label.primary, marginTop: 5}}>{ledgerQuery.loading ? "---" : ledgerQuery.data?.at(-1)?.runningBalance.toLocaleString()} pts</Text>
-                        <Text style={{fontSize: '36', color: colors.label.secondary}}>≈ $124.00</Text>
-                    </View>
+                <BalanceCard userId={session.user.id}/>
                     <View style={{width: '90%', marginVertical: 40}}><Button label="Request Payout"
                                                                              backgroundColor={colors.label.primary}
                                                                              underlayColor={colors.background.primary}
