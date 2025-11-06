@@ -1,11 +1,7 @@
 import {Text, View} from "react-native";
 import {colors} from "../constants/colors";
 import {CardTitle} from "../components/CardTitle";
-import {Button} from "../components/Button";
-import {SafeAreaView} from "react-native-safe-area-context";
-import * as AppleAuthentication from 'expo-apple-authentication';
 import {supabase} from "../utils/supabase";
-import {useEffect, useState} from "react";
 import {useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function BalanceCard({userId}) {
@@ -53,7 +49,7 @@ export function BalanceCard({userId}) {
                 console.log('Change received!', payload)
             }
         )
-        .subscribe()
+        .subscribe( status => { console.log(status) })
 
     return (
         <View style={{

@@ -1,6 +1,5 @@
 import {Text, View} from "react-native";
 import {colors} from "../constants/colors";
-import {CardTitle} from "../components/CardTitle";
 import {Button} from "../components/Button";
 import {SafeAreaView} from "react-native-safe-area-context";
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -9,8 +8,6 @@ import {useEffect, useState} from "react";
 import {useQuery, useQueryClient } from "@tanstack/react-query";
 import {BalanceCard} from "../components/BalanceCard";
 export default function Index() {
-    const queryClient = useQueryClient();
-    queryClient.invalidateQueries();
     const [session, setSession] = useState(null)
     useEffect(() => {
         const fetchSession = async () => {
