@@ -6,6 +6,7 @@ import {CardTitle} from "../components/CardTitle";
 import {useQuery} from '@tanstack/react-query';
 import {supabase} from '../utils/supabase'
 import * as Linking from 'expo-linking';
+import {getWeekDifference, formatDateRange} from "../utils/dateUtil";
 
 export default function Index() {
     const gamesQuery = useQuery({
@@ -108,26 +109,6 @@ function GameWagerInfo({bet, players, pot}) {
 }
 
 const GameCard = ({title, pot, entry, players, startDate, endDate}) => {
-    const formatDateRange = (startDateString, endDateString) => {
-        const startDate = new Date(startDateString);
-        const endDate = new Date(endDateString);
-
-        const startDateFormattedString = startDate.toLocaleDateString(undefined, {
-            month: "short",
-            day: "numeric",
-        });
-
-        const endDateStringMonth = (startDate.getMonth() === endDate.getMonth()) ? undefined : "short";
-        const endDateFormattedString = endDate.toLocaleDateString(undefined, {
-            month: endDateStringMonth,
-            day: "numeric",
-        });
-        return `${startDateFormattedString}-${endDateFormattedString}`;
-    }
-
-    const getWeekDifference = (start, end) => {
-        return (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24 * 7);
-    }
     const daysUntilStart = Math.floor((new Date(startDate) - new Date()) / (1000 * 60 * 60 * 24));
 
     return (
