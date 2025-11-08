@@ -7,6 +7,7 @@ import {useQuery} from '@tanstack/react-query';
 import {supabase} from '../utils/supabase'
 import * as Linking from 'expo-linking';
 import {getWeekDifference, formatDateRange} from "../utils/dateUtil";
+import {useRouter} from "expo-router";
 
 export default function Index() {
     const gamesQuery = useQuery({
@@ -99,7 +100,7 @@ function GameWagerInfo({bet, players, pot}) {
 
 const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
     const daysUntilStart = Math.floor((new Date(startDate) - new Date()) / (1000 * 60 * 60 * 24));
-
+    const router = useRouter();
     return (
         <View style={{
             minHeight: '200',
@@ -142,12 +143,13 @@ const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
             <GameWagerInfo bet={entry} players={players} pot={pot}/>
             <View style={{marginTop: 20}}>
                 <Button onPress={async () => {
-                    const data = await supabase.functions.invoke('create-checkout-session', {
-                        body: {
-                            gameId: id}
-                    });
-                    console.log(data.data.url);
-                    Linking.openURL(data.data.url);
+                    // const data = await supabase.functions.invoke('create-checkout-session', {
+                    //     body: {
+                    //         gameId: id}
+                    // });
+                    // console.log(data.data.url);
+                    // Linking.openURL(data.data.url);
+                    router.navigate('/games/modal');
                 }} label='Join Game'/>
             </View>
         </View>

@@ -24,5 +24,13 @@ export default function GamesLayout() {
             // headerBlurEffect: 'systemMaterial',
             // headerSearchBarOptions: {}
     }}
-    />;
+    >
+        <Stack.Screen name="index"/>
+        <Stack.Screen
+            name="modal"
+            options={{
+                presentation: 'modal',
+            }}
+        />
+    </Stack>;
 }
