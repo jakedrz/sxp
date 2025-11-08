@@ -40,14 +40,11 @@ export default function Index() {
                     style={{
                         backgroundColor: colors.background.primary,
                     }}>
-
-            {/*
-              Render fetched games when available. Fallback to static examples while loading or if no data.
-            */}
-            {gamesQuery.data && gamesQuery.data.length > 0 ? (
-                gamesQuery.data.map((g) => (
+            {
+                gamesQuery.data?.map((g) => (
                     <GameCard
                         key={g.id}
+                        id={g.id}
                         title={g.title ?? 'Untitled'}
                         entry={g.entry_cost ?? 0}
                         players={g.players ?? 0}
@@ -55,15 +52,7 @@ export default function Index() {
                         startDate={g.start_date}
                         endDate={g.end_date}
                     />
-                ))
-            ) : (
-                <>
-                    <GameCard title="Pumpkin' Around" entry={40} players={647} pot={'25,880'}/>
-                    <GameCard title="No Sweat November" entry={40} players={647} pot={'25,880'}/>
-                    <GameCard title='Step & Destroy' entry={40} players={647} pot={'25,880'}/>
-                    <GameCard title="Sleighin' it" entry={40} players={647} pot={'25,880'}/>
-                </>
-            )}
+                ))}
         </ScrollView>
     );
 }
@@ -92,7 +81,7 @@ function GameWagerInfoPlayers({value}) {
 }
 
 function GameWagerInfoEntry({value}) {
-    return <GameWagerInfoBit symbolName='dollarsign.circle' label={`$${value} entry`}/>;
+    return <GameWagerInfoBit symbolName='dollarsign.circle' label={`$${value/100} entry`}/>;
 }
 
 function GameWagerInfo({bet, players, pot}) {
@@ -108,7 +97,7 @@ function GameWagerInfo({bet, players, pot}) {
     </View>;
 }
 
-const GameCard = ({title, pot, entry, players, startDate, endDate}) => {
+const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
     const daysUntilStart = Math.floor((new Date(startDate) - new Date()) / (1000 * 60 * 60 * 24));
 
     return (
@@ -153,7 +142,10 @@ const GameCard = ({title, pot, entry, players, startDate, endDate}) => {
             <GameWagerInfo bet={entry} players={players} pot={pot}/>
             <View style={{marginTop: 20}}>
                 <Button onPress={async () => {
-                    const data = await supabase.functions.invoke('create-checkout-session');
+                    const data = await supabase.functions.invoke('create-checkout-session', {
+                        body: {
+                            gameId: id}
+                    });
                     console.log(data.data.url);
                     Linking.openURL(data.data.url);
                 }} label='Join Game'/>

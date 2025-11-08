@@ -10,6 +10,7 @@ import StepInformation from "./components/StepInformation";
 import {colors} from './constants/colors';
 import {useQuery, useQueryClient } from "@tanstack/react-query";
 import {supabase} from "./utils/supabase";
+import { formatDateRange } from "./utils/dateUtil";
 
 export default function Home() {
     Appearance.setColorScheme("dark");
@@ -90,10 +91,14 @@ export default function Home() {
             paddingTop: 55,
         }}
     >
-        <PageHeader title="Home" subtitle={currentGameQuery.data.games?.title} gameInfo={`10k steps, 5 days/week
-Oct 6-27`}/>
-        <StepInformation pastStepCount={pastStepCount}/>
-        <GameInfo game={currentGameQuery.data.games}/>
+        <PageHeader title="Home" subtitle={currentGameQuery.data?.games?.title} gameInfo={currentGameQuery.data?.games ? (`10k steps, 5 days/week
+${formatDateRange(currentGameQuery.data?.games?.start_date, currentGameQuery.data?.games?.end_date)}`) : null}/>
+
+        {currentGameQuery.data?.games ? (
+        <><StepInformation pastStepCount={pastStepCount}/>
+        <GameInfo game={currentGameQuery.data?.games}/></>
+            )
+            : <Text style={{color: colors.label.primary}}>You are not currently in a game. Join a game to start tracking your steps!</Text>}
     </SafeAreaView>
   );
 }
