@@ -5,6 +5,8 @@ import {Button} from "../components/Button";
 import {CardTitle} from "../components/CardTitle";
 import {useQuery} from '@tanstack/react-query';
 import {supabase} from '../utils/supabase'
+import * as Linking from 'expo-linking';
+import {getWeekDifference, formatDateRange} from "../utils/dateUtil";
 
 export default function Index() {
     const gamesQuery = useQuery({
@@ -107,26 +109,6 @@ function GameWagerInfo({bet, players, pot}) {
 }
 
 const GameCard = ({title, pot, entry, players, startDate, endDate}) => {
-    const formatDateRange = (startDateString, endDateString) => {
-        const startDate = new Date(startDateString);
-        const endDate = new Date(endDateString);
-
-        const startDateFormattedString = startDate.toLocaleDateString(undefined, {
-            month: "short",
-            day: "numeric",
-        });
-
-        const endDateStringMonth = (startDate.getMonth() === endDate.getMonth()) ? undefined : "short";
-        const endDateFormattedString = endDate.toLocaleDateString(undefined, {
-            month: endDateStringMonth,
-            day: "numeric",
-        });
-        return `${startDateFormattedString}-${endDateFormattedString}`;
-    }
-
-    const getWeekDifference = (start, end) => {
-        return (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24 * 7);
-    }
     const daysUntilStart = Math.floor((new Date(startDate) - new Date()) / (1000 * 60 * 60 * 24));
 
     return (
@@ -139,7 +121,12 @@ const GameCard = ({title, pot, entry, players, startDate, endDate}) => {
             borderCurve: 'continuous'
         }}>
 
-            {(daysUntilStart < 7) ? (<Text style={{color: colors.label.tertiary, fontWeight: 700, fontSize: '12'}}>STARTS IN {daysUntilStart} DAYS</Text>) : null}
+            {   (daysUntilStart >= 0)
+                    ? ((daysUntilStart < 7)
+                        ? (<Text style={{color: colors.label.tertiary, fontWeight: 700, fontSize: '12'}}>STARTS IN {daysUntilStart} DAYS</Text>)
+                        : null)
+                    : (<Text style={{color: colors.label.tertiary, fontWeight: 700, fontSize: '12'}}>STARTED {Math.abs(daysUntilStart)} DAYS AGO</Text>)
+            }
             <CardTitle text={title} fontSize={17}/>
             <Text style={{
                 fontSize: 20,
@@ -165,7 +152,11 @@ const GameCard = ({title, pot, entry, players, startDate, endDate}) => {
             }}/>
             <GameWagerInfo bet={entry} players={players} pot={pot}/>
             <View style={{marginTop: 20}}>
-                <Button onPress={() => {}} label='Join Game'/>
+                <Button onPress={async () => {
+                    const data = await supabase.functions.invoke('create-checkout-session');
+                    console.log(data.data.url);
+                    Linking.openURL(data.data.url);
+                }} label='Join Game'/>
             </View>
         </View>
     )

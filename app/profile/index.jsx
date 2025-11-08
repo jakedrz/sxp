@@ -1,11 +1,12 @@
 import {Text, View} from "react-native";
 import {colors} from "../constants/colors";
-import {CardTitle} from "../components/CardTitle";
 import {Button} from "../components/Button";
 import {SafeAreaView} from "react-native-safe-area-context";
 import * as AppleAuthentication from 'expo-apple-authentication';
 import {supabase} from "../utils/supabase";
 import {useEffect, useState} from "react";
+import {useQuery, useQueryClient } from "@tanstack/react-query";
+import {BalanceCard} from "../components/BalanceCard";
 export default function Index() {
     const [session, setSession] = useState(null)
     useEffect(() => {
@@ -25,7 +26,7 @@ export default function Index() {
         })
 
         return () => subscription.subscription.unsubscribe()
-    }, [])
+    }, []);
 
     if(session) {
         return (
@@ -50,22 +51,12 @@ export default function Index() {
                         width: '90%'
                     }}
                 >
-                    <View style={{
-                        borderRadius: 20,
-                        padding: 20,
-                        backgroundColor: colors.background.secondary,
-                        borderCurve: 'continuous',
-                        width: "90%"
-                    }}>
-                        <CardTitle text="Account Balance" fontSize={18}/>
-                        <Text style={{fontSize: '48', color: colors.label.primary, marginTop: 5}}>12,400 pts</Text>
-                        <Text style={{fontSize: '36', color: colors.label.secondary}}>≈ $124.00</Text>
-                    </View>
+                <BalanceCard userId={session.user.id}/>
                     <View style={{width: '90%', marginVertical: 40}}><Button label="Request Payout"
                                                                              backgroundColor={colors.label.primary}
                                                                              underlayColor={colors.background.primary}
                                                                              textColor={colors.background.primary}
-                                                                             onPress={() => {
+                                                                             onPress={() => {supabase.auth.signOut()
                                                                              }}/></View>
                 </View>
             </SafeAreaView>
