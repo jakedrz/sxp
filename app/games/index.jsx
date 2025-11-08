@@ -81,7 +81,7 @@ function GameWagerInfoPlayers({value}) {
 }
 
 function GameWagerInfoEntry({value}) {
-    return <GameWagerInfoBit symbolName='dollarsign.circle' label={`$${value/100} entry`}/>;
+    return <GameWagerInfoBit symbolName='dollarsign.circle' label={`$${value} entry`}/>;
 }
 
 function GameWagerInfo({bet, players, pot}) {
