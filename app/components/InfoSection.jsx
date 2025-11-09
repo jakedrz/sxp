@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: colors.background.grouped.secondary, // secondary system background light mode
         borderRadius: 16,
-        borderCurve: 'continuous'
+        borderCurve: 'continuous',
+        paddingHorizontal: 16,
         // overflow: 'hidden',
         // shadowColor: '#000',
         // shadowOpacity: 0.05,
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 14,
-        paddingHorizontal: 16,
+        // paddingHorizontal: 16,
     },
     rowBorder: {
         borderBottomWidth: StyleSheet.hairlineWidth,
