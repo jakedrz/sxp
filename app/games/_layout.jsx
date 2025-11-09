@@ -30,6 +30,8 @@ export default function GamesLayout() {
             name="modal"
             options={{
                 presentation: 'modal',
+                headerTitle: 'Join Game',
+                headerLargeTitle: false
             }}
         />
     </Stack>;

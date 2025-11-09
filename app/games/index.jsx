@@ -8,6 +8,7 @@ import {supabase} from '../utils/supabase'
 import * as Linking from 'expo-linking';
 import {getWeekDifference, formatDateRange} from "../utils/dateUtil";
 import {useRouter} from "expo-router";
+import {Separator} from "../components/Separator";
 
 export default function Index() {
     const gamesQuery = useQuery({
@@ -122,7 +123,7 @@ const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
                 fontSize: 20,
                 color: colors.label.secondary,
             }}>
-                {getWeekDifference(startDate, endDate)} week game | {formatDateRange(startDate, endDate)}
+                {getWeekDifference(startDate, endDate)} week game • {formatDateRange(startDate, endDate)}
             </Text>
             <Text>
                 <Text style={{
@@ -135,11 +136,7 @@ const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
             </Text>
 
 
-            <View style={{
-                borderColor: colors.separator,
-                borderBottomWidth: 1,
-                marginVertical: 10,
-            }}/>
+            <Separator/>
             <GameWagerInfo bet={entry} players={players} pot={pot}/>
             <View style={{marginTop: 20}}>
                 <Button onPress={async () => {

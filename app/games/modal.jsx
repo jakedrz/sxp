@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
+import {colors} from "../constants/colors";
 
 export default function Modal() {
     return (
         <View style={styles.container}>
-            <Text>Modal screen</Text>
+            <Text style={{color: colors.label.primary}}>Modal screen</Text>
         </View>
     );
 }
@@ -13,5 +14,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: colors.background.primary,
     },
 });
