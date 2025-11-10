@@ -5,7 +5,8 @@ import {colors} from "../constants/colors";
 const styles = StyleSheet.create({
     section: {
         marginBottom: 24,
-        width: '90%'
+        width: '100%',
+        flexGrow:1
     },
     sectionTitle: {
         fontSize: 13,
@@ -40,8 +41,7 @@ const styles = StyleSheet.create({
     },
     value: {
         fontSize: 16,
-        color: colors.label.secondary,
-        fontVariant: ['tabular-nums'], // keep numbers aligned nicely
+        color: colors.label.secondary, // keep numbers aligned nicely
     },
 });
 

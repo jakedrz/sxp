@@ -36,7 +36,7 @@ export default function Index() {
         <ScrollView contentInsetAdjustmentBehavior="never"
                     contentContainerStyle={{
                         alignItems: 'center',
-                        paddingHorizontal: 16,
+                        paddingHorizontal: 8,
                     }
                     }
                     style={{
