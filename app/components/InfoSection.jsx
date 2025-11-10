@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     section: {
         marginBottom: 24,
         width: '100%',
-        flexGrow:1
+        // flexGrow:1
     },
     sectionTitle: {
         fontSize: 13,
@@ -49,7 +49,7 @@ export const InfoSection = ({ title, data }) => (
     <View style={styles.section}>
         <Text style={styles.sectionTitle}>{title}</Text>
         <View style={styles.card}>
-            {data.map(({ label, value }, index) => (
+            {data.map(({ label, value, numeric }, index) => (
                 <View
                     key={label}
                     style={[
@@ -58,7 +58,7 @@ export const InfoSection = ({ title, data }) => (
                     ]}
                 >
                     <Text style={styles.label}>{label}</Text>
-                    <Text style={styles.value}>{value}</Text>
+                    <Text style={[styles.value, (numeric ? {fontVariant: 'tabular-nums'} : null)]}>{value}</Text>
                 </View>
             ))}
         </View>
