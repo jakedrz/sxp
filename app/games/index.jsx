@@ -40,7 +40,7 @@ export default function Index() {
                     }
                     }
                     style={{
-                        backgroundColor: colors.background.primary,
+                        backgroundColor: colors.background.grouped.primary,
                     }}>
             {
                 gamesQuery.data?.map((g) => (
@@ -105,7 +105,7 @@ const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
     return (
         <View style={{
             minHeight: '200',
-            backgroundColor: colors.background.secondary,
+            backgroundColor: colors.background.grouped.secondary,
             borderRadius: 20,
             padding: 22,
             marginVertical: 10,
@@ -147,7 +147,7 @@ const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
                     // console.log(data.data.url);
                     // Linking.openURL(data.data.url);
                     router.navigate('/games/modal');
-                }} label='Join Game'/>
+                }} label='Join Game' backgroundColor={colors.background.grouped.tertiary}/>
             </View>
         </View>
     )

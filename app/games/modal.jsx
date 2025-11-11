@@ -27,14 +27,18 @@ export default function Modal() {
                 <InfoSection
                     title="Points Summary"
                     data={[
-                        {label: 'Entry Fee', value: '30.00 pts', numeric: true},
+                        {label: 'Entry Fee', value: '40.00 pts', numeric: true},
                         {label: 'Your Balance', value: '15.00 pts', numeric: true},
-                        {label: 'Amount Needed', value: '15.00 pts', numeric: true},
+                        {label: 'Amount Needed', value: '25.00 pts', numeric: true},
                     ]}
                 /></View>
-            <View style={{width: '100%', padding: 22, gap: 8}}>
-            <Button backgroundColor={colors.brand.dynamic} textColor={colors.background.primary} label='Join Game' minimumHeight={55}/>
-                <Button label='Cancel' minimumHeight={55}/>
+            <View style={{width: '100%', padding: 16, gap: 8}}>
+                <Text style={{color: colors.label.secondary, padding: 8, textAlign: 'left'}}>
+                    You'll be redirected to add <Text style={{fontWeight: 'bold'}}>25 points</Text> to your account.
+                    Once the transaction is complete, you'll be automatically added to the game.
+                </Text>
+                <Button backgroundColor={colors.brand.dynamic} textColor={colors.background.primary} label='Add Points and Join Game' minimumHeight={55}/>
+                <Button label='Cancel' minimumHeight={55} textColor={colors.label.tertiary}/>
             </View>
         </SafeAreaView>
     );
