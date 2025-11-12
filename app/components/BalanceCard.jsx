@@ -40,7 +40,7 @@ export function BalanceCard({userId}) {
     }
 
 
-    const pointsLedger = supabase.channel('custom-insert-channel')
+    const pointsLedger = supabase.channel('ledger-insert-channel')
         .on(
             'postgres_changes',
             { event: 'INSERT', schema: 'public', table: 'points_ledger', filter: `user_id=eq.${userId}` },
@@ -51,6 +51,8 @@ export function BalanceCard({userId}) {
         )
         .subscribe( status => { console.log(status) })
 
+    const balance = ledgerQuery.data?.at(-1)?.runningBalance;
+
     return (
         <View style={{
             borderRadius: 20,
@@ -60,8 +62,8 @@ export function BalanceCard({userId}) {
             width: "90%"
         }}>
             <CardTitle text="Account Balance" fontSize={18}/>
-            <Text style={{fontSize: '48', color: colors.label.primary, marginTop: 5}}>{ledgerQuery.data?.at(-1)?.runningBalance.toLocaleString()} pts</Text>
-            <Text style={{fontSize: '36', color: colors.label.secondary}}>≈ $124.00</Text>
+            <Text style={{fontSize: '48', color: colors.label.primary, marginTop: 5}}>{balance.toLocaleString()} pts</Text>
+            <Text style={{fontSize: '36', color: colors.label.secondary}}>≈ ${balance.toLocaleString()}.00</Text>
         </View>
     )
 }

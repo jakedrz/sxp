@@ -142,13 +142,7 @@ const GameCard = ({id, game}) => {
             <GameWagerInfo bet={(entry)} players={players} pot={pot}/>
             <View style={{marginTop: 20}}>
                 <Button onPress={async () => {
-                    // const data = await supabase.functions.invoke('create-checkout-session', {
-                    //     body: {
-                    //         gameId: id}
-                    // });
-                    // console.log(data.data.url);
-                    // Linking.openURL(data.data.url);
-                    router.navigate(`games/modal?gameObject=${btoa({id: 'helo'})}`);
+                    router.navigate(`games/modal?gameObject=${btoa(JSON.stringify(game))}`);
                 }} label='Join Game' backgroundColor={colors.background.grouped.tertiary}/>
             </View>
         </View>

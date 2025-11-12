@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
     rowBorder: {
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#E5E5EA',
+        borderBottomColor: colors.separator,
     },
     label: {
         fontSize: 16,
