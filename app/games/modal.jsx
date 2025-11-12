@@ -4,8 +4,10 @@ import { InfoSection } from '../components/InfoSection';
 import PageHeader from '../components/PageHeader';
 import { SafeAreaView } from "react-native-safe-area-context";
 import {Button} from "../components/Button";
+import {useLocalSearchParams} from "expo-router";
 
 export default function Modal() {
+    console.log(useLocalSearchParams());
     return (
         <SafeAreaView style={styles.container}>
             <View style={{flexGrow:1, width: '100%'}}><Text style={{

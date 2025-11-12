@@ -46,13 +46,7 @@ export default function Index() {
                 gamesQuery.data?.map((g) => (
                     <GameCard
                         key={g.id}
-                        id={g.id}
-                        title={g.title ?? 'Untitled'}
-                        entry={g.entry_cost ?? 0}
-                        players={g.players ?? 0}
-                        pot={g.pot ?? '0'}
-                        startDate={g.start_date}
-                        endDate={g.end_date}
+                        game={g}
                     />
                 ))}
         </ScrollView>
@@ -99,9 +93,17 @@ function GameWagerInfo({bet, players, pot}) {
     </View>;
 }
 
-const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
+const GameCard = ({id, game}) => {
+    const {title, entry_cost: entry, players, pot, start_date: startDate, end_date: endDate} = game;
     const daysUntilStart = Math.floor((new Date(startDate) - new Date()) / (1000 * 60 * 60 * 24));
     const router = useRouter();
+    // id={g.id}
+    // title={g.title ?? 'Untitled'}
+    // entry={g.entry_cost ?? 0}
+    // players={g.players ?? 0}
+    // pot={g.pot ?? '0'}
+    // startDate={g.start_date}
+    // endDate={g.end_date}
     return (
         <View style={{
             minHeight: '200',
@@ -137,7 +139,7 @@ const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
 
 
             <Separator/>
-            <GameWagerInfo bet={entry} players={players} pot={pot}/>
+            <GameWagerInfo bet={(entry)} players={players} pot={pot}/>
             <View style={{marginTop: 20}}>
                 <Button onPress={async () => {
                     // const data = await supabase.functions.invoke('create-checkout-session', {
@@ -146,7 +148,7 @@ const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
                     // });
                     // console.log(data.data.url);
                     // Linking.openURL(data.data.url);
-                    router.navigate('/games/modal');
+                    router.navigate(`games/modal?gameObject=${btoa({id: 'helo'})}`);
                 }} label='Join Game' backgroundColor={colors.background.grouped.tertiary}/>
             </View>
         </View>
