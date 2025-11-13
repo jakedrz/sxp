@@ -1,4 +1,4 @@
-import {Linking, StyleSheet, Text, View} from 'react-native';
+import {Linking, StyleSheet, Text, View, Alert} from 'react-native';
 import {colors} from "../constants/colors";
 import { InfoSection } from '../components/InfoSection';
 import PageHeader from '../components/PageHeader';
@@ -80,16 +80,18 @@ export default function Modal() {
     const userBalance = ledgerQuery.data.at(-1).runningBalance;
     const entryCost = gameObject.entry_cost;
     const amountNeeded = Math.max(0, entryCost - userBalance);
+    const topUpNeeded = amountNeeded > 0;
     const pointsSummary = [
         {label: 'Entry Fee', value: `${entryCost}.00 pts`, numeric: true},
-        {label: 'Current Balance', value: `${userBalance}.00 pts`, numeric: true}
+        {label: 'Available Balance', value: `${userBalance}.00 pts`, numeric: true}
     ];
-    if (amountNeeded > 0) {
+    if (topUpNeeded) {
         pointsSummary.push({label: 'Amount Needed', value: `${amountNeeded}.00 pts`, numeric: true});
     }
+    const buttonLabel = topUpNeeded ? 'Add Points and Join Game' : 'Join Game';
 
     const checkoutSessionQuery = useQuery({
-        enabled: (session != null) && (amountNeeded > 0),
+        enabled: (session != null) && (topUpNeeded),
         queryKey:[gameObject.id, session?.user.id, userBalance],
         staleTime: 30*60*1000, // 30 minutes
         queryFn: async () => {
@@ -129,16 +131,28 @@ export default function Modal() {
                 <ConfirmDescription amountNeeded={amountNeeded}/>
                 <Button backgroundColor={colors.brand.dynamic}
                         textColor={colors.background.primary}
-                        label='Add Points and Join Game'
+                        label={buttonLabel}
                         minimumHeight={55}
                         onPress={() => {
-                            if (checkoutSessionQuery.error) {
+                            if (topUpNeeded) {
+                                if (checkoutSessionQuery.error) {
 
-                            }
-                            if (checkoutSessionQuery.data) {
+                                }
+                                if (checkoutSessionQuery.data) {
 
+                                }
+                                Linking.openURL(checkoutSessionQuery.data.data.url);
+                            } else {
+                                Alert.alert('Joining Game',
+                                    `This will debit your account {points} and add you to {gameTitle}.
+Once joined, your entry can't be undone.`,
+                                    [
+                                        {text: 'Cancel', style: 'cancel'},
+                                        {text: 'Join', isPreferred: true, style: 'default', onPress: () => {
+                                            //join game
+                                        }}
+                                    ])
                             }
-                            Linking.openURL(checkoutSessionQuery.data.data.url);
                         }}
                 />
                 <Button label='Cancel' minimumHeight={55} textColor={colors.label.tertiary} onPress={() => {
