@@ -32,6 +32,7 @@ function ConfirmDescription({amountNeeded}) {
 
 export default function Modal() {
     const router = useRouter();
+    const queryClient = useQueryClient();
     const [session, setSession] = useState(null)
     useEffect(() => {
         const fetchSession = async () => {
@@ -148,8 +149,11 @@ export default function Modal() {
 Once joined, your entry can't be undone.`,
                                     [
                                         {text: 'Cancel', style: 'cancel'},
-                                        {text: 'Join', isPreferred: true, style: 'default', onPress: () => {
-                                            //join game
+                                        {text: 'Join', isPreferred: true, style: 'default', onPress: async () => {
+                                            const result = await supabase.functions.invoke('join-game', {body: {gameId: gameObject.id}});
+                                            queryClient.invalidateQueries();
+                                            router.back();
+                                            router.navigate("/");
                                         }}
                                     ])
                             }
