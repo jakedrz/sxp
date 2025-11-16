@@ -9,6 +9,8 @@ import * as Linking from 'expo-linking';
 import {getWeekDifference, formatDateRange} from "../utils/dateUtil";
 import {useRouter} from "expo-router";
 import {Separator} from "../components/Separator";
+import {useGetIsUserPlayingGame} from "../hooks/useGetIsUserPlayingGame";
+import {useEffect, useState} from "react";
 
 export default function Index() {
     const gamesQuery = useQuery({
@@ -23,6 +25,28 @@ export default function Index() {
         },
     });
 
+    const [session, setSession] = useState(null)
+    useEffect(() => {
+        const fetchSession = async () => {
+            const {
+                data: { session },
+            } = await supabase.auth.getSession()
+            setSession(session)
+            console.log(session);
+        }
+
+        fetchSession()
+
+        // subscribe to auth state changes
+        const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session)
+        })
+
+        return () => subscription.subscription.unsubscribe()
+    }, []);
+
+    const isUserPlayingGame = useGetIsUserPlayingGame("791a4590-69ec-4e98-b8ca-b5b5831a27bc", session != null);
+    console.log(`query ${JSON.stringify(isUserPlayingGame, null, 2)}`);
     // debug logging
     if (gamesQuery.isLoading) {
         console.log('games loading...');
@@ -47,6 +71,7 @@ export default function Index() {
                     <GameCard
                         key={g.id}
                         game={g}
+                        showButton={!(isUserPlayingGame.data.data)}
                     />
                 ))}
         </ScrollView>
@@ -93,7 +118,8 @@ function GameWagerInfo({bet, players, pot}) {
     </View>;
 }
 
-const GameCard = ({id, game}) => {
+const GameCard = ({id, game, showButton=true}) => {
+    console.log(`showButton: ${showButton}`)
     const {title, entry_cost: entry, players, pot, start_date: startDate, end_date: endDate} = game;
     const daysUntilStart = Math.floor((new Date(startDate) - new Date()) / (1000 * 60 * 60 * 24));
     const router = useRouter();
@@ -140,11 +166,11 @@ const GameCard = ({id, game}) => {
 
             <Separator/>
             <GameWagerInfo bet={(entry)} players={players} pot={pot}/>
-            <View style={{marginTop: 20}}>
+            {showButton ? (<View style={{marginTop: 20}}>
                 <Button onPress={async () => {
                     router.navigate(`games/modal?gameObject=${btoa(JSON.stringify(game))}`);
                 }} label='Join Game' backgroundColor={colors.background.grouped.tertiary}/>
-            </View>
+            </View>) : null}
         </View>
     )
 }
