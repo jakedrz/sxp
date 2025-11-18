@@ -1,7 +1,7 @@
 import {colors} from "../constants/colors";
 import {Text, TouchableHighlight, View} from "react-native";
 
-export const Button = ({label, textColor=colors.brand.dynamic, onPress, backgroundColor=colors.background.tertiary, underlayColor="white"}) => {
+export const Button = ({label, textColor=colors.brand.dynamic, onPress, backgroundColor=colors.background.tertiary, underlayColor="white", minimumHeight=45}) => {
 
     return (
         <TouchableHighlight
@@ -14,7 +14,7 @@ export const Button = ({label, textColor=colors.brand.dynamic, onPress, backgrou
             onPress={onPress}>
             <View style={{
                 backgroundColor: backgroundColor,
-                minHeight: 45,
+                minHeight: minimumHeight,
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>

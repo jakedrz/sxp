@@ -19,7 +19,12 @@ export const colors = {
     background: {
         primary: PlatformColor('systemBackground'),
         secondary: PlatformColor('secondarySystemBackground'),
-        tertiary: PlatformColor('tertiarySystemBackground')
+        tertiary: PlatformColor('tertiarySystemBackground'),
+        grouped: {
+            primary: PlatformColor('systemGroupedBackground'),
+            secondary: PlatformColor('secondarySystemGroupedBackground'),
+            tertiary: PlatformColor('tertiarySystemGroupedBackground'),
+        }
     },
     separator: PlatformColor('opaqueSeparator')
 }

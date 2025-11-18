@@ -7,6 +7,10 @@ import {useQuery} from '@tanstack/react-query';
 import {supabase} from '../utils/supabase'
 import * as Linking from 'expo-linking';
 import {getWeekDifference, formatDateRange} from "../utils/dateUtil";
+import {useRouter} from "expo-router";
+import {Separator} from "../components/Separator";
+import {useGetIsUserPlayingGame} from "../hooks/useGetIsUserPlayingGame";
+import {useEffect, useState} from "react";
 
 export default function Index() {
     const gamesQuery = useQuery({
@@ -21,6 +25,28 @@ export default function Index() {
         },
     });
 
+    const [session, setSession] = useState(null)
+    useEffect(() => {
+        const fetchSession = async () => {
+            const {
+                data: { session },
+            } = await supabase.auth.getSession()
+            setSession(session)
+            console.log(session);
+        }
+
+        fetchSession()
+
+        // subscribe to auth state changes
+        const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session)
+        })
+
+        return () => subscription.subscription.unsubscribe()
+    }, []);
+
+    const isUserPlayingGame = useGetIsUserPlayingGame(session?.user.id, session != null);
+    console.log(`query ${JSON.stringify(isUserPlayingGame, null, 2)}`);
     // debug logging
     if (gamesQuery.isLoading) {
         console.log('games loading...');
@@ -34,23 +60,18 @@ export default function Index() {
         <ScrollView contentInsetAdjustmentBehavior="never"
                     contentContainerStyle={{
                         alignItems: 'center',
-                        paddingHorizontal: 16,
+                        paddingHorizontal: 8,
                     }
                     }
                     style={{
-                        backgroundColor: colors.background.primary,
+                        backgroundColor: colors.background.grouped.primary,
                     }}>
             {
                 gamesQuery.data?.map((g) => (
                     <GameCard
                         key={g.id}
-                        id={g.id}
-                        title={g.title ?? 'Untitled'}
-                        entry={g.entry_cost ?? 0}
-                        players={g.players ?? 0}
-                        pot={g.pot ?? '0'}
-                        startDate={g.start_date}
-                        endDate={g.end_date}
+                        game={g}
+                        showButton={(isUserPlayingGame.data == null ? true : !(isUserPlayingGame.data.data))}
                     />
                 ))}
         </ScrollView>
@@ -97,13 +118,22 @@ function GameWagerInfo({bet, players, pot}) {
     </View>;
 }
 
-const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
+const GameCard = ({id, game, showButton=true}) => {
+    console.log(`showButton: ${showButton}`)
+    const {title, entry_cost: entry, players, pot, start_date: startDate, end_date: endDate} = game;
     const daysUntilStart = Math.floor((new Date(startDate) - new Date()) / (1000 * 60 * 60 * 24));
-
+    const router = useRouter();
+    // id={g.id}
+    // title={g.title ?? 'Untitled'}
+    // entry={g.entry_cost ?? 0}
+    // players={g.players ?? 0}
+    // pot={g.pot ?? '0'}
+    // startDate={g.start_date}
+    // endDate={g.end_date}
     return (
         <View style={{
             minHeight: '200',
-            backgroundColor: colors.background.secondary,
+            backgroundColor: colors.background.grouped.secondary,
             borderRadius: 20,
             padding: 22,
             marginVertical: 10,
@@ -121,7 +151,7 @@ const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
                 fontSize: 20,
                 color: colors.label.secondary,
             }}>
-                {getWeekDifference(startDate, endDate)} week game | {formatDateRange(startDate, endDate)}
+                {getWeekDifference(startDate, endDate)} week game • {formatDateRange(startDate, endDate)}
             </Text>
             <Text>
                 <Text style={{
@@ -134,22 +164,13 @@ const GameCard = ({id, title, pot, entry, players, startDate, endDate}) => {
             </Text>
 
 
-            <View style={{
-                borderColor: colors.separator,
-                borderBottomWidth: 1,
-                marginVertical: 10,
-            }}/>
-            <GameWagerInfo bet={entry} players={players} pot={pot}/>
-            <View style={{marginTop: 20}}>
+            <Separator/>
+            <GameWagerInfo bet={(entry)} players={players} pot={pot}/>
+            {showButton ? (<View style={{marginTop: 20}}>
                 <Button onPress={async () => {
-                    const data = await supabase.functions.invoke('create-checkout-session', {
-                        body: {
-                            gameId: id}
-                    });
-                    console.log(data.data.url);
-                    Linking.openURL(data.data.url);
-                }} label='Join Game'/>
-            </View>
+                    router.navigate(`games/modal?gameObject=${btoa(JSON.stringify(game))}`);
+                }} label='Join Game' backgroundColor={colors.background.grouped.tertiary}/>
+            </View>) : null}
         </View>
     )
 }
