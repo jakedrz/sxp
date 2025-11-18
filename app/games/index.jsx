@@ -45,7 +45,7 @@ export default function Index() {
         return () => subscription.subscription.unsubscribe()
     }, []);
 
-    const isUserPlayingGame = useGetIsUserPlayingGame("791a4590-69ec-4e98-b8ca-b5b5831a27bc", session != null);
+    const isUserPlayingGame = useGetIsUserPlayingGame(session?.user.id, session != null);
     console.log(`query ${JSON.stringify(isUserPlayingGame, null, 2)}`);
     // debug logging
     if (gamesQuery.isLoading) {
@@ -71,7 +71,7 @@ export default function Index() {
                     <GameCard
                         key={g.id}
                         game={g}
-                        showButton={!(isUserPlayingGame.data.data)}
+                        showButton={(isUserPlayingGame.data == null ? true : !(isUserPlayingGame.data.data))}
                     />
                 ))}
         </ScrollView>
