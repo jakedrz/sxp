@@ -3,7 +3,18 @@ import {colors} from "../constants/colors";
 import {SymbolView} from "expo-symbols";
 import {Ring} from "@/app/components/HealthRings/Ring/Ring";
 
+import {useState, useEffect} from "react";
+
 function StepInformation({pastStepCount}) {
+    const [i, setI] = useState(0);
+    useEffect(() => {
+       setInterval(() => {
+           setI(prev => prev + 10);
+       }, 10000);
+    }, [])
+    useEffect(() => {
+        console.log(i);
+    }, [i]);
     return <>
         <View style={{paddingVertical: 40}}>
             <Ring radius={77} bgColor={colors.brand.dimmed} gradientStartColor={colors.brand}
