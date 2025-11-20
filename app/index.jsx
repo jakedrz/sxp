@@ -69,7 +69,7 @@ export default function Home() {
 ${formatDateRange(currentGameQuery.data?.games?.start_date, currentGameQuery.data?.games?.end_date)}`) : null}/>
 
         {currentGameQuery.data?.games ? (
-        <><StepInformation/>
+        <><StepInformation userId={session.user.id}/>
         <GameInfo game={currentGameQuery.data?.games}/></>
             )
             : <Text style={{color: colors.label.primary}}>You are not currently in a game. Join a game to start tracking your steps!</Text>}

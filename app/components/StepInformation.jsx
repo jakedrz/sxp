@@ -4,20 +4,30 @@ import {SymbolView} from "expo-symbols";
 import {Ring} from "@/app/components/HealthRings/Ring/Ring";
 
 import {useState, useEffect} from "react";
+import {useGetUsersMostRecentGame} from "../hooks/useGetUsersMostRecentGame";
+import {useGetLastStepWindowEnd} from "../hooks/useGetLastStepWindowEnd";
 import {Pedometer} from "expo-sensors";
+import {getLastStepWindowEnd} from "../utils/getLastStepWindowEnd";
 
-function StepInformation() {
+function StepInformation({userId}) {
     const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
     const [pastStepCount, setPastStepCount] = useState(0);
     const [currentStepCount, setCurrentStepCount] = useState(0);
     useEffect(() => {
-       setInterval(() => {
-           updateSteps();
+       setInterval(async () => {
+           console.log(`last step time: ${JSON.stringify(await getLastStepWindowEnd(userId), null, 2)}`);
        }, 10000);
     }, []);
 
-    const updateSteps = async () => {
+    console.log(`mostrecentgame from stepinfo: ${JSON.stringify(useGetUsersMostRecentGame(userId, true), null, 2)}`)
 
+    const updateSteps = async () => {
+        //get most recent game step window end time
+
+        //if it's null and no error, then it's the user's first time playing
+        //is it before today?
+        //if yes, get remainder of steps from end of window to 23:59:59
+        //then get window from 00:00:00 to now
     }
 
     const subscribe = async () => {
