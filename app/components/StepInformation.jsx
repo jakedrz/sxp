@@ -4,17 +4,46 @@ import {SymbolView} from "expo-symbols";
 import {Ring} from "@/app/components/HealthRings/Ring/Ring";
 
 import {useState, useEffect} from "react";
+import {Pedometer} from "expo-sensors";
 
-function StepInformation({pastStepCount}) {
-    const [i, setI] = useState(0);
+function StepInformation() {
+    const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
+    const [pastStepCount, setPastStepCount] = useState(0);
+    const [currentStepCount, setCurrentStepCount] = useState(0);
     useEffect(() => {
        setInterval(() => {
-           setI(prev => prev + 10);
+           updateSteps();
        }, 10000);
-    }, [])
+    }, []);
+
+    const updateSteps = async () => {
+
+    }
+
+    const subscribe = async () => {
+        const isAvailable = await Pedometer.isAvailableAsync();
+        setIsPedometerAvailable(String(isAvailable));
+
+        if (isAvailable) {
+            const end = new Date();
+            const start = new Date();
+            start.setDate(end.getDate() - 1);
+
+            const pastStepCountResult = await Pedometer.getStepCountAsync(start, end);
+            if (pastStepCountResult) {
+                setPastStepCount(pastStepCountResult.steps);
+            }
+
+            return Pedometer.watchStepCount(result => {
+                setCurrentStepCount(result.steps);
+            });
+        }
+    };
+
     useEffect(() => {
-        console.log(i);
-    }, [i]);
+        const subscription = subscribe();
+    }, []);
+
     return <>
         <View style={{paddingVertical: 40}}>
             <Ring radius={77} bgColor={colors.brand.dimmed} gradientStartColor={colors.brand}

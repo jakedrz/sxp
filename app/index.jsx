@@ -14,9 +14,7 @@ import { formatDateRange } from "./utils/dateUtil";
 
 export default function Home() {
     Appearance.setColorScheme("dark");
-    const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
-    const [pastStepCount, setPastStepCount] = useState(0);
-    const [currentStepCount, setCurrentStepCount] = useState(0);
+
 
     const [session, setSession] = useState(null)
     useEffect(() => {
@@ -36,30 +34,6 @@ export default function Home() {
         })
 
         return () => subscription.subscription.unsubscribe()
-    }, []);
-
-    const subscribe = async () => {
-        const isAvailable = await Pedometer.isAvailableAsync();
-        setIsPedometerAvailable(String(isAvailable));
-
-        if (isAvailable) {
-            const end = new Date();
-            const start = new Date();
-            start.setDate(end.getDate() - 1);
-
-            const pastStepCountResult = await Pedometer.getStepCountAsync(start, end);
-            if (pastStepCountResult) {
-                setPastStepCount(pastStepCountResult.steps);
-            }
-
-            return Pedometer.watchStepCount(result => {
-                setCurrentStepCount(result.steps);
-            });
-        }
-    };
-
-    useEffect(() => {
-        const subscription = subscribe();
     }, []);
 
     const currentGameQuery = useQuery({
@@ -95,7 +69,7 @@ export default function Home() {
 ${formatDateRange(currentGameQuery.data?.games?.start_date, currentGameQuery.data?.games?.end_date)}`) : null}/>
 
         {currentGameQuery.data?.games ? (
-        <><StepInformation pastStepCount={pastStepCount}/>
+        <><StepInformation/>
         <GameInfo game={currentGameQuery.data?.games}/></>
             )
             : <Text style={{color: colors.label.primary}}>You are not currently in a game. Join a game to start tracking your steps!</Text>}
