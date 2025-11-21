@@ -13,7 +13,6 @@ export function useGetLastStepWindowEnd(userId, enabled) {
                 .order('end_time', {ascending: false})
                 .limit(1)
                 .maybeSingle();
-            console.log(data);
             if (error) {
                 return {data: null, error: error}
             }

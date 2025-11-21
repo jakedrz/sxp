@@ -15,7 +15,6 @@ export default function Index() {
                 data: { session },
             } = await supabase.auth.getSession()
             setSession(session)
-            console.log(session);
         }
 
         fetchSession()
@@ -79,13 +78,10 @@ export default function Index() {
                                     AppleAuthentication.AppleAuthenticationScope.EMAIL,
                                 ],
                             });
-                            console.log(credential);
                             const { data, error } = await supabase.auth.signInWithIdToken({
                                 provider: 'apple',
                                 token: credential.identityToken
                             })
-                            console.log(data);
-                            console.log(error);
                             // signed in
                         } catch (e) {
                             if (e.code === 'ERR_REQUEST_CANCELED') {

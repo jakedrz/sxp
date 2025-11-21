@@ -13,7 +13,6 @@ export function useGetIsUserPlayingGame(userId, enabled) {
                 .order('joined_at', {ascending: false})
                 .limit(1)
                 .maybeSingle();
-            console.log(data);
             if (error) {
                 return {data: null, error: error}
             }
