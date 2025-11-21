@@ -3,6 +3,7 @@ import {Pedometer} from "expo-sensors";
 import {getLastStepWindowEnd} from "../utils/getLastStepWindowEnd";
 import {useEffect, useState} from "react";
 import {useGetUsersMostRecentGame} from "../hooks/useGetUsersMostRecentGame";
+import {supabase} from "../utils/supabase";
 
 function StepSyncer({userId}) {
 
@@ -10,13 +11,33 @@ function StepSyncer({userId}) {
     const [pastStepCount, setPastStepCount] = useState(0);
     const [currentStepCount, setCurrentStepCount] = useState(0);
     useEffect(() => {
-        setInterval(async () => {
-            console.log(`generated start time: ${JSON.stringify(await getStepStartWindow(userId), null, 2)}`);
-        }, 1000);
+        setInterval(() => {
+            updateSteps(userId);
+        }, 10000);
     }, []);
 
     const updateSteps = async (userId) => {
-        await getStepStartWindow(userId);
+        const rows = (await getStepsSince(await getStepStartWindow(userId))).map(
+            row => ({
+                user_id: userId,
+                start_time: row.start_time,
+                end_time: row.end_time,
+                steps: row.steps
+            })
+        );
+
+        if(rows.length > 0)
+        {
+            await supabase
+                .from('step_windows')
+                .insert(rows);
+
+        }
+        const {data} = await supabase
+            .from('step_windows')
+            .select('start_time,end_time,steps')
+            .eq('user_id', userId)
+            .gte('start_time', new Date(new Date().setHours(0,0,0,0)).toISOString());
     }
 
     const getStepStartWindow = async (userId) => {
@@ -36,6 +57,54 @@ function StepSyncer({userId}) {
             return dateYesterday;
         }
         return end_time;
+    }
+
+    const getStepsSince = async (sinceDate) => {
+        const end = new Date();
+        const start = new Date(sinceDate);
+        const stepRows = [];
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        if (isDateYesterday(start)) {
+            const yesterdayEnd = new Date();
+            yesterdayEnd.setHours(23, 59, 59, 999);
+            yesterdayEnd.setDate(yesterdayEnd.getDate() - 1);
+            const yesterdayStepCountResult = await Pedometer.getStepCountAsync(start, yesterdayEnd);
+            const todayStepCountResult = await Pedometer.getStepCountAsync(todayStart, end);
+            stepRows.push({
+                start_time: start.toISOString(),
+                end_time: yesterdayEnd.toISOString(),
+                steps: yesterdayStepCountResult.steps
+            });
+            stepRows.push({
+                start_time: todayStart.toISOString(),
+                end_time: end.toISOString(),
+                steps: todayStepCountResult.steps
+            });
+        }
+        else
+        {
+            const startTime = start < todayStart ? todayStart : start;
+            const todayStepCountResult = await Pedometer.getStepCountAsync(startTime, end);
+            if(todayStepCountResult.steps > 0) {
+                stepRows.push({
+                    start_time: startTime.toISOString(),
+                    end_time: end.toISOString(),
+                    steps: todayStepCountResult.steps
+                });
+            }
+        }
+        console.log(stepRows);
+        return stepRows;
+    }
+
+    const isDateYesterday = (date) => {
+        const today = new Date();
+        const yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
+        return date.getDate() === yesterday.getDate() &&
+               date.getMonth() === yesterday.getMonth() &&
+               date.getFullYear() === yesterday.getFullYear();
     }
 
     const hoursDifference = (date1, date2) => {
@@ -67,6 +136,7 @@ function StepSyncer({userId}) {
     useEffect(() => {
         const subscription = subscribe();
     }, []);
+    return null
 }
 
 export default StepSyncer;
