@@ -11,8 +11,8 @@ function StepSyncer({userId}) {
     const [pastStepCount, setPastStepCount] = useState(0);
     const [currentStepCount, setCurrentStepCount] = useState(0);
     useEffect(() => {
-        setInterval(() => {
-            updateSteps(userId);
+        setInterval(async () => {
+            await updateSteps(userId);
         }, 10000);
     }, []);
 
