@@ -21,7 +21,9 @@ function StepSyncer({userId}) {
             row => ({
                 user_id: userId,
                 start_time: row.start_time,
+                start_time_tz_offset: row.start_time_tz_offset,
                 end_time: row.end_time,
+                end_time_tz_offset: row.end_time_tz_offset,
                 steps: row.steps
             })
         );
@@ -35,7 +37,7 @@ function StepSyncer({userId}) {
         }
         const {data} = await supabase
             .from('step_windows')
-            .select('start_time,end_time,steps')
+            .select('start_time,start_time_tz_offset,end_time,end_time_tz_offset,steps')
             .eq('user_id', userId)
             .gte('start_time', new Date(new Date().setHours(0,0,0,0)).toISOString());
     }
@@ -73,12 +75,16 @@ function StepSyncer({userId}) {
             const todayStepCountResult = await Pedometer.getStepCountAsync(todayStart, end);
             stepRows.push({
                 start_time: start.toISOString(),
+                start_time_tz_offset: start.getTimezoneOffset(),
                 end_time: yesterdayEnd.toISOString(),
+                end_time_tz_offset: yesterdayEnd.getTimezoneOffset(),
                 steps: yesterdayStepCountResult.steps
             });
             stepRows.push({
                 start_time: todayStart.toISOString(),
+                start_time_tz_offset: todayStart.getTimezoneOffset(),
                 end_time: end.toISOString(),
+                end_time_tz_offset: end.getTimezoneOffset(),
                 steps: todayStepCountResult.steps
             });
         }
@@ -89,6 +95,8 @@ function StepSyncer({userId}) {
             if(todayStepCountResult.steps > 0) {
                 stepRows.push({
                     start_time: startTime.toISOString(),
+                    start_time_tz_offset: startTime.getTimezoneOffset(),
+                    end_time_tz_offset: end.getTimezoneOffset(),
                     end_time: end.toISOString(),
                     steps: todayStepCountResult.steps
                 });
