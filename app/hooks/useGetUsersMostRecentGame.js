@@ -1,10 +1,10 @@
 import {useQuery} from "@tanstack/react-query";
 import {supabase} from "../utils/supabase";
 
-export function useGetIsUserPlayingGame(userId, enabled) {
+export function useGetUsersMostRecentGame(userId, enabled) {
     return useQuery({
         enabled: enabled,
-        queryKey: ['isUserPlayingGame', userId],
+        queryKey: ['usersMostRecentGame', userId],
         queryFn: async () => {
             const {data, error} = await supabase
                 .from('user_games')
@@ -17,9 +17,9 @@ export function useGetIsUserPlayingGame(userId, enabled) {
                 return {data: null, error: error}
             }
             if (data == null) {
-                return {data: false, error: null}
+                return {data: null, error: null}
             } else {
-                return {data: data.status === 'joined', error: null}
+                return {data: data, error: null}
             }
         }
     });

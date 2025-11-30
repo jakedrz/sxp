@@ -17,6 +17,7 @@ export function BalanceCard({userId}) {
                 .order('created_at', { ascending: true });
             if (error) throw error;
             let runningBalance = 0;
+            if (data.length === 0) return [{runningBalance: 0}];
             return data.map((x) => {
                 runningBalance += x.amount;
                 return {
@@ -29,14 +30,11 @@ export function BalanceCard({userId}) {
                 }
             });
         },
-        placeholderData: [{runningBalance: '---'}]
+        placeholderData: [{runningBalance: 0}]
     });
     if (ledgerQuery.isLoading) {
-        console.log('balance loading...');
     } else if (ledgerQuery.isError) {
-        console.log('balance error', ledgerQuery.error);
     } else {
-        console.log('balance loaded', ledgerQuery.data);
     }
 
 

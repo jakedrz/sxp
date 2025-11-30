@@ -1,25 +1,25 @@
 import {useQuery} from "@tanstack/react-query";
 import {supabase} from "../utils/supabase";
 
-export function useGetIsUserPlayingGame(userId, enabled) {
+export function useGetLastStepWindowEnd(userId, enabled) {
     return useQuery({
         enabled: enabled,
-        queryKey: ['isUserPlayingGame', userId],
+        queryKey: ['lastStepWindowEnd', userId],
         queryFn: async () => {
             const {data, error} = await supabase
-                .from('user_games')
-                .select('id, user_id, games (id, title, entry_cost, start_date, end_date), status, joined_at, forfeited_at, won_at, lost_at')
+                .from('step_windows')
+                .select('end_time')
                 .eq('user_id', userId)
-                .order('joined_at', {ascending: false})
+                .order('end_time', {ascending: false})
                 .limit(1)
                 .maybeSingle();
             if (error) {
                 return {data: null, error: error}
             }
             if (data == null) {
-                return {data: false, error: null}
+                return {data: null, error: null}
             } else {
-                return {data: data.status === 'joined', error: null}
+                return {data, error: null}
             }
         }
     });

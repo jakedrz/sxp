@@ -40,7 +40,6 @@ export default function Modal() {
                 data: { session },
             } = await supabase.auth.getSession()
             setSession(session)
-            console.log(session);
         }
 
         fetchSession()
@@ -63,6 +62,7 @@ export default function Modal() {
                 .order('created_at', { ascending: true });
             if (error) throw error;
             let runningBalance = 0;
+            if (data.length === 0) return [{runningBalance: 0}];
             return data.map((x) => {
                 runningBalance += x.amount;
                 return {

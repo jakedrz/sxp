@@ -1,7 +1,8 @@
 import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
 import { Stack } from 'expo-router';
-import {DynamicColorIOS, PlatformColor} from "react-native";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {DynamicColorIOS, PlatformColor, AppState, AppStateStatus} from "react-native";
+import {QueryClient, QueryClientProvider, focusManager} from "@tanstack/react-query";
+import {useEffect} from "react";
 
 const queryClient = new QueryClient();
 
@@ -9,6 +10,16 @@ export const unstable_settings = {
     initialRouteName: 'index',
 };
 export default function RootLayout() {
+    const onAppStateChange = (status: AppStateStatus) => {
+        focusManager.setFocused(status==='active');
+    }
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', onAppStateChange)
+
+        return () => subscription.remove()
+    }, [])
+
     return (
         <QueryClientProvider client={queryClient}><NativeTabs
             iconColor={'#A18ADF'}

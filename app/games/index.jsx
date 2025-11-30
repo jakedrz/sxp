@@ -32,7 +32,6 @@ export default function Index() {
                 data: { session },
             } = await supabase.auth.getSession()
             setSession(session)
-            console.log(session);
         }
 
         fetchSession()
@@ -46,14 +45,10 @@ export default function Index() {
     }, []);
 
     const isUserPlayingGame = useGetIsUserPlayingGame(session?.user.id, session != null);
-    console.log(`query ${JSON.stringify(isUserPlayingGame, null, 2)}`);
     // debug logging
     if (gamesQuery.isLoading) {
-        console.log('games loading...');
     } else if (gamesQuery.isError) {
-        console.log('games error', gamesQuery.error);
     } else {
-        console.log('games loaded', gamesQuery.data);
     }
 
     return (
@@ -119,7 +114,6 @@ function GameWagerInfo({bet, players, pot}) {
 }
 
 const GameCard = ({id, game, showButton=true}) => {
-    console.log(`showButton: ${showButton}`)
     const {title, entry_cost: entry, players, pot, start_date: startDate, end_date: endDate} = game;
     const daysUntilStart = Math.floor((new Date(startDate) - new Date()) / (1000 * 60 * 60 * 24));
     const router = useRouter();
