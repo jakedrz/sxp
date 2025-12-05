@@ -16,68 +16,78 @@ type Props = {
   children?: ReactNode;
   fill?: number;
   icon?: React.ReactNode;
+  size?: number;
+  trackWidth?: number;
 };
 
-export const Ring: React.FC<Props> = ({ radius, bgColor, gradientStartColor, gradientEndColor, fill = 0, icon }) => {
-  const circleCircumference = 2 * Math.PI * radius;
-  const trackWidth = 25; // matches strokeWidth
-  // Use shared value for animation
-  const animatedOffset = useSharedValue(circleCircumference);
+export const Ring: React.FC<Props> = ({ size=300, bgColor, gradientStartColor, gradientEndColor, fill = 0, icon, trackWidth=25 }) => {
+    const circleCircumference = 2 * Math.PI * size / 2;
+    // Use shared value for animation
+    const animatedOffset = useSharedValue(circleCircumference);
 
-  useEffect(() => {
-    animatedOffset.value = withTiming(
-      circleCircumference - (circleCircumference * fill) / 100,
-      {
-        duration: 1000,
-        easing: Easing.inOut(Easing.sin),
-      }
-    );
-  }, [fill, circleCircumference, animatedOffset]);
+    useEffect(() => {
+        animatedOffset.value = withTiming(
+            circleCircumference - (circleCircumference * fill) / 100,
+            {
+                duration: 1000,
+                easing: Easing.inOut(Easing.sin),
+            }
+        );
+    }, [fill, circleCircumference, animatedOffset]);
 
-  // Animated props for SVG Circle
-  const animatedProps = useAnimatedProps(() => ({
-    strokeDashoffset: animatedOffset.value,
-  }));
+    // Animated props for SVG Circle
+    const animatedProps = useAnimatedProps(() => ({
+        strokeDashoffset: animatedOffset.value,
+    }));
 
-  return (
-    <View style={{ alignItems: 'center', justifyContent: 'center', position: 'relative', width: 300, height: 300 }}>
-      {icon && (
-        <View
-          style={{
-            position: 'absolute',
-            top: (90 - radius - trackWidth / 2),
-            left: '50%',
-            transform: [{ translateX: -12 }], // assuming icon is 24px wide
-            zIndex: 1,
-            backgroundColor: 'transparent',
-            paddingTop: 4,
-          }}
-        >
-          {icon}
+    const circleRadius = size / 2 - trackWidth / 2;
+
+    return (
+        <View style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            width: {size},
+            height: {size}
+        }}>
+            {icon && (
+                <View
+                    style={{
+                        position: 'absolute',
+                        top: -16,
+                        left: '50%',
+                        transform: [{translateX: -16}], // assuming icon is 32px wide
+                        zIndex: 1,
+                        backgroundColor: 'transparent',
+                        paddingTop: trackWidth/2,
+                    }}
+                >
+                    {icon}
+                </View>
+            )}
+            <Svg height={size} width={size}>
+                <Defs>
+                    <LinearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <Stop offset="0%" stopColor={gradientEndColor as string}/>
+                        <Stop offset="100%" stopColor={gradientStartColor as string}/>
+                    </LinearGradient>
+                </Defs>
+                <G rotation={-90} originX={size / 2} originY={size / 2}>
+                    <Circle cx='50%' cy='50%' r={circleRadius} stroke={bgColor as string} fill="transparent"
+                            strokeWidth={trackWidth}/>
+                    <AnimatedCircle
+                        r={circleRadius}
+                        cx='50%'
+                        cy='50%'
+                        stroke="url(#gradient)"
+                        fill="transparent"
+                        strokeWidth={trackWidth}
+                        strokeDasharray={circleCircumference}
+                        animatedProps={animatedProps}
+                        strokeLinecap="round"
+                    />
+                </G>
+            </Svg>
         </View>
-      )}
-      <Svg height="300" width="300" viewBox="0 0 180 180">
-        <Defs>
-          <LinearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <Stop offset="0%" stopColor={gradientEndColor as string} />
-            <Stop offset="100%" stopColor={gradientStartColor as string} />
-          </LinearGradient>
-        </Defs>
-        <G rotation={-90} originX="90" originY="90">
-          <Circle cx="50%" cy="50%" r={radius} stroke={bgColor as string} fill="transparent" strokeWidth={trackWidth} />
-          <AnimatedCircle
-            cx="50%"
-            cy="50%"
-            r={radius}
-            stroke="url(#gradient)"
-            fill="transparent"
-            strokeWidth={trackWidth}
-            strokeDasharray={circleCircumference}
-            animatedProps={animatedProps}
-            strokeLinecap="round"
-          />
-        </G>
-      </Svg>
-    </View>
-  );
-};
+    );
+}

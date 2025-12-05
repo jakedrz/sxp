@@ -8,6 +8,7 @@ import {useQuery} from "@tanstack/react-query";
 import {supabase} from "./utils/supabase";
 import {formatDateRange} from "./utils/dateUtil";
 import StepSyncer from "./components/StepSyncer";
+import {GameWeeklyOverview} from "./components/GameWeeklyOverview";
 
 export default function Home() {
     Appearance.setColorScheme("dark");
@@ -37,7 +38,7 @@ export default function Home() {
         queryFn: async () => {
             const {data, error} = await supabase
                 .from('user_games')
-                .select('id, user_id, games (id, title, entry_cost, start_date, end_date), status, joined_at, forfeited_at, won_at, lost_at')
+                .select('id, user_id, games (id, title, entry_cost, start_date, end_date, game_types (title)), status, joined_at, forfeited_at, won_at, lost_at')
                 .eq('user_id', session.user.id)
                 .order('joined_at', {ascending: false})
                 .limit(1)
@@ -60,11 +61,12 @@ export default function Home() {
             }}
         >
             <PageHeader title="Home" subtitle={currentGameQuery.data?.games?.title}
-                        gameInfo={currentGameQuery.data?.games ? (`10k steps, 5 days/week
+                        gameInfo={currentGameQuery.data?.games ? (`${currentGameQuery.data?.games?.game_types?.title}
 ${formatDateRange(currentGameQuery.data?.games?.start_date, currentGameQuery.data?.games?.end_date)}`) : null}/>
 
             {currentGameQuery.data?.games ? (
                     <>
+                        <GameWeeklyOverview/>
                         <StepSyncer userId={session.user.id}/>
                         <StepInformation userId={session.user.id}/>
                         <GameInfo game={currentGameQuery.data?.games}/></>

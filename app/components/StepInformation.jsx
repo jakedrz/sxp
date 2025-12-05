@@ -10,9 +10,10 @@ function StepInformation({userId}) {
     const pastStepCount = 5000
     return <>
         <View style={{paddingVertical: 40}}>
-            <Ring radius={77} bgColor={colors.brand.dimmed} gradientStartColor={colors.brand}
+            <Ring size='300' bgColor={colors.brand.dimmed} gradientStartColor={colors.brand}
                   gradientEndColor={colors.brand.lighter}
                   fill={pastStepCount / 100}
+                  trackWidth={45}
                   icon={<SymbolView name="figure.walk" tintColor="black" weight={"bold"} size={32}/>}/>
         </View>
         <Text style={{
