@@ -21,42 +21,49 @@ type RingInfo = {
 }
 
 type Props = {
-  radius: number;
-  ringInfo: Array<RingInfo>
-  children?: ReactNode;
-  size?: number;
-  trackWidth?: number;
+    radius: number;
+    ringInfo: Array<RingInfo>
+    children?: ReactNode;
+    size?: number;
+    trackWidth?: number;
 };
 
-export const Ring: React.FC<Props> = ({ size=300, ringInfo=[{bgColor: '#000000', gradient: {start:'#000000', end:'#000000'}, fill: 0, icon: null}], trackWidth=25 }) => {
-    const circleCircumference = 2 * Math.PI * size / 2;
+export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000000', gradient: { start: '#000000', end: '#000000' }, fill: 0, icon: null }], trackWidth = 25 }) => {
+    const circle = ringInfo.map((ring, index) => {
+        const radius = size / 2 - trackWidth / 2 - index * (trackWidth + 5);
+        return {
+            radius: radius,
+            circumference: radius * 2 * Math.PI
+        }
+    });
     // Use shared value for animation
-    const animatedOffset = useSharedValue(circleCircumference);
+    const animatedOffsets = circle.map((circle) => useSharedValue(circle.circumference));
 
     useEffect(() => {
-        animatedOffset.value = withTiming(
-            circleCircumference - (circleCircumference * ringInfo[0].fill) / 100,
-            {
-                duration: 1000,
-                easing: Easing.inOut(Easing.sin),
-            }
-        );
-    }, [ringInfo[0].fill, circleCircumference, animatedOffset]);
+        animatedOffsets.forEach((animatedOffset, index) => {
+            animatedOffset.value = withTiming(
+                circle[index].circumference - (circle[index].circumference * ringInfo[index].fill) / 100,
+                {
+                    duration: 1000,
+                    easing: Easing.inOut(Easing.sin),
+                }
+            )
+        });
+    }, [ringInfo, circle, animatedOffsets]);
 
     // Animated props for SVG Circle
-    const animatedProps = useAnimatedProps(() => ({
+    const animatedProps = animatedOffsets.map(animatedOffset => useAnimatedProps(() => ({
         strokeDashoffset: animatedOffset.value,
-    }));
+    })));
 
-    const circleRadius = size / 2 - trackWidth / 2;
 
     return (
         <View style={{
             alignItems: 'center',
             justifyContent: 'center',
             position: 'relative',
-            width: {size},
-            height: {size}
+            width: { size },
+            height: { size }
         }}>
             {ringInfo[0].icon && (
                 <View
@@ -64,10 +71,10 @@ export const Ring: React.FC<Props> = ({ size=300, ringInfo=[{bgColor: '#000000',
                         position: 'absolute',
                         top: -16,
                         left: '50%',
-                        transform: [{translateX: -16}], // assuming icon is 32px wide
+                        transform: [{ translateX: -16 }], // assuming icon is 32px wide
                         zIndex: 1,
                         backgroundColor: 'transparent',
-                        paddingTop: trackWidth/2,
+                        paddingTop: trackWidth / 2,
                     }}
                 >
                     {ringInfo[0].icon}
@@ -78,26 +85,31 @@ export const Ring: React.FC<Props> = ({ size=300, ringInfo=[{bgColor: '#000000',
                     {ringInfo.map((ringInfo, index) => {
                         return (
                             <LinearGradient id={`gradient${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                                <Stop offset="0%" stopColor={ringInfo.gradient.start as string}/>
-                                <Stop offset="100%" stopColor={ringInfo.gradient.end as string}/>
+                                <Stop offset="0%" stopColor={ringInfo.gradient.start as string} />
+                                <Stop offset="100%" stopColor={ringInfo.gradient.end as string} />
                             </LinearGradient>
                         )
                     })}
                 </Defs>
                 <G rotation={-90} originX={size / 2} originY={size / 2}>
-                    <Circle cx='50%' cy='50%' r={circleRadius} stroke={ringInfo[0].bgColor as string} fill="transparent"
-                            strokeWidth={trackWidth}/>
-                    <AnimatedCircle
-                        r={circleRadius}
-                        cx='50%'
-                        cy='50%'
-                        stroke="url(#gradient0)"
-                        fill="transparent"
-                        strokeWidth={trackWidth}
-                        strokeDasharray={circleCircumference}
-                        animatedProps={animatedProps}
-                        strokeLinecap="round"
-                    />
+                    {ringInfo.map((ringInfo, index) => {
+                        return (<Circle cx='50%' cy='50%' r={circle[index].radius} stroke={ringInfo.bgColor as string} fill="transparent"
+                            strokeWidth={trackWidth} />)
+                    })}
+                    {ringInfo.map((ringInfo, index) => {
+                        return (<AnimatedCircle
+                            r={circle[index].radius}
+                            cx='50%'
+                            cy='50%'
+                            stroke={`url(#gradient${index})`}
+                            fill="transparent"
+                            strokeWidth={trackWidth}
+                            strokeDasharray={circle[index].circumference}
+                            animatedProps={animatedProps[index]}
+                            strokeLinecap="round"
+                        />
+                        )
+                    })}
                 </G>
             </Svg>
         </View>

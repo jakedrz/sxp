@@ -14,10 +14,16 @@ function StepInformation({userId}) {
                   ringInfo={[{
                     bgColor:colors.brand.dimmed,
                     gradient: {start: colors.brand, end: colors.brand.lighter},
-                    fill: pastStepCount / 100,
+                    fill: 50,
                     icon: <SymbolView name="figure.walk" tintColor="black" weight={"bold"} size={32}/>
-                  }]}
-                  trackWidth={45}/>
+                  },
+                {
+                    bgColor:'gray',
+                    gradient: {start: 'orange', end: 'yellow'},
+                    fill: 25,
+                    icon: <SymbolView name="figure.walk" tintColor="black" weight={"bold"} size={32}/>
+                }]}
+                  trackWidth={40}/>
         </View>
         <Text style={{
             color: colors.label.primary,
