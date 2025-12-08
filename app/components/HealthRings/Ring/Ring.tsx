@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import { ColorValue } from 'react-native';
+import { OpaqueColorValue } from 'react-native';
 import { ReactNode } from 'react';
 import Svg, { Circle, G, Defs, LinearGradient, Stop } from 'react-native-svg';
 import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from 'react-native-reanimated';
@@ -8,32 +8,40 @@ import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from '
 // AnimatedCircle for reanimated v2+
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
+type Gradient = {
+    start: string;
+    end: string;
+}
+
+type RingInfo = {
+    bgColor: string,
+    gradient: Gradient,
+    fill: number,
+    icon: React.ReactNode
+}
+
 type Props = {
   radius: number;
-  bgColor: OpaqueColorValue;
-  gradientStartColor: OpaqueColorValue;
-  gradientEndColor: OpaqueColorValue;
+  ringInfo: Array<RingInfo>
   children?: ReactNode;
-  fill?: number;
-  icon?: React.ReactNode;
   size?: number;
   trackWidth?: number;
 };
 
-export const Ring: React.FC<Props> = ({ size=300, bgColor, gradientStartColor, gradientEndColor, fill = 0, icon, trackWidth=25 }) => {
+export const Ring: React.FC<Props> = ({ size=300, ringInfo=[{bgColor: '#000000', gradient: {start:'#000000', end:'#000000'}, fill: 0, icon: null}], trackWidth=25 }) => {
     const circleCircumference = 2 * Math.PI * size / 2;
     // Use shared value for animation
     const animatedOffset = useSharedValue(circleCircumference);
 
     useEffect(() => {
         animatedOffset.value = withTiming(
-            circleCircumference - (circleCircumference * fill) / 100,
+            circleCircumference - (circleCircumference * ringInfo[0].fill) / 100,
             {
                 duration: 1000,
                 easing: Easing.inOut(Easing.sin),
             }
         );
-    }, [fill, circleCircumference, animatedOffset]);
+    }, [ringInfo[0].fill, circleCircumference, animatedOffset]);
 
     // Animated props for SVG Circle
     const animatedProps = useAnimatedProps(() => ({
@@ -50,7 +58,7 @@ export const Ring: React.FC<Props> = ({ size=300, bgColor, gradientStartColor, g
             width: {size},
             height: {size}
         }}>
-            {icon && (
+            {ringInfo[0].icon && (
                 <View
                     style={{
                         position: 'absolute',
@@ -62,24 +70,28 @@ export const Ring: React.FC<Props> = ({ size=300, bgColor, gradientStartColor, g
                         paddingTop: trackWidth/2,
                     }}
                 >
-                    {icon}
+                    {ringInfo[0].icon}
                 </View>
             )}
             <Svg height={size} width={size}>
                 <Defs>
-                    <LinearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <Stop offset="0%" stopColor={gradientEndColor as string}/>
-                        <Stop offset="100%" stopColor={gradientStartColor as string}/>
-                    </LinearGradient>
+                    {ringInfo.map((ringInfo, index) => {
+                        return (
+                            <LinearGradient id={`gradient${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                                <Stop offset="0%" stopColor={ringInfo.gradient.start as string}/>
+                                <Stop offset="100%" stopColor={ringInfo.gradient.end as string}/>
+                            </LinearGradient>
+                        )
+                    })}
                 </Defs>
                 <G rotation={-90} originX={size / 2} originY={size / 2}>
-                    <Circle cx='50%' cy='50%' r={circleRadius} stroke={bgColor as string} fill="transparent"
+                    <Circle cx='50%' cy='50%' r={circleRadius} stroke={ringInfo[0].bgColor as string} fill="transparent"
                             strokeWidth={trackWidth}/>
                     <AnimatedCircle
                         r={circleRadius}
                         cx='50%'
                         cy='50%'
-                        stroke="url(#gradient)"
+                        stroke="url(#gradient0)"
                         fill="transparent"
                         strokeWidth={trackWidth}
                         strokeDasharray={circleCircumference}
