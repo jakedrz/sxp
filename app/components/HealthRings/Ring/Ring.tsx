@@ -26,11 +26,12 @@ type Props = {
     children?: ReactNode;
     size?: number;
     trackWidth?: number;
+    trackPadding?: number;
 };
 
-export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000000', gradient: { start: '#000000', end: '#000000' }, fill: 0, icon: null }], trackWidth = 35 }) => {
+export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000000', gradient: { start: '#000000', end: '#000000' }, fill: 0, icon: null }], trackWidth = 35, trackPadding=5 }) => {
     const circle = ringInfo.map((ring, index) => {
-        const radius = size / 2 - trackWidth / 2 - index * (trackWidth + 5);
+        const radius = size / 2 - trackWidth / 2 - index * (trackWidth + trackPadding);
         return {
             radius: radius,
             circumference: radius * 2 * Math.PI
@@ -65,21 +66,23 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
             width: { size },
             height: { size }
         }}>
-            {ringInfo[0].icon && (
+            {ringInfo.map((ring, index) => (
+            ring.icon && (
                 <View
                     style={{
                         position: 'absolute',
-                        top: -16,
+                        top: -14,
                         left: '50%',
-                        transform: [{ translateX: -16 }], // assuming icon is 32px wide
+                        transform: [{ translateX: -14 }], // assuming icon is 32px wide
                         zIndex: 1,
                         backgroundColor: 'transparent',
-                        paddingTop: trackWidth / 2,
+                        paddingTop: trackWidth / 2 + index * (trackWidth + trackPadding),
                     }}
                 >
-                    {ringInfo[0].icon}
+                    {ring.icon}
                 </View>
-            )}
+            )))
+        }
             <Svg height={size} width={size}>
                 <Defs>
                     {ringInfo.map((ringInfo, index) => {

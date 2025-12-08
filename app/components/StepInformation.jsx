@@ -16,19 +16,19 @@ function StepInformation({ userId }) {
                         bgColor: colors.brand.dimmed,
                         gradient: { start: colors.brand, end: colors.brand.lighter },
                         fill: 100,
-                        icon: <SymbolView name="figure.walk" tintColor="black" weight={"bold"} size={32} />
+                        icon: <SymbolView name="chevron.forward" tintColor="black" weight={"bold"} size={28} />
                     },
                     {
                         bgColor: colors.ring.tertiary.dimmed,
                         gradient: { start: colors.ring.tertiary.base, end: colors.ring.tertiary.lighter },
-                        fill: 85,
-                        icon: <SymbolView name="figure.walk" tintColor="black" weight={"bold"} size={32} />
+                        fill: 80,
+                        icon: <SymbolView name="chevron.forward.2" tintColor="black" weight={"bold"} size={28} />
                     },
                     {
                         bgColor: colors.ring.secondary.dimmed,
                         gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                        fill: 75,
-                        icon: <SymbolView name="figure.walk" tintColor="black" weight={"bold"} size={32} />
+                        fill: 70,
+                        icon: <SymbolView name="flame.fill" tintColor="black" weight={"bold"} size={28} />
                     }]}/>
         </View>
         <Text style={{
