@@ -28,7 +28,7 @@ type Props = {
     trackWidth?: number;
 };
 
-export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000000', gradient: { start: '#000000', end: '#000000' }, fill: 0, icon: null }], trackWidth = 25 }) => {
+export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000000', gradient: { start: '#000000', end: '#000000' }, fill: 0, icon: null }], trackWidth = 35 }) => {
     const circle = ringInfo.map((ring, index) => {
         const radius = size / 2 - trackWidth / 2 - index * (trackWidth + 5);
         return {
@@ -44,8 +44,8 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
             animatedOffset.value = withTiming(
                 circle[index].circumference - (circle[index].circumference * ringInfo[index].fill) / 100,
                 {
-                    duration: 1000,
-                    easing: Easing.inOut(Easing.sin),
+                    duration: 1500,
+                    easing: Easing.out(Easing.circle),
                 }
             )
         });
