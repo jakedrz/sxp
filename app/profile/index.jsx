@@ -28,6 +28,7 @@ export default function Index() {
     }, []);
 
     if(session) {
+        console.log(session)
         return (
             <SafeAreaView
                 style={{

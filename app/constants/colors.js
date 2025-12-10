@@ -14,12 +14,12 @@ export const colors = {
     ring : {
         secondary: {
             base: 'hsla(24, 95%, 59%, 1.00)',      //
-            lighter: 'hsla(24, 100%, 69%, 1.00)',   //+17, +10
+            lighter: 'hsla(24, 100%, 79%, 1.00)',   //+17, +10
             dimmed: 'hsla(24, 40%, 7%, 1.00)'     //-60, -62
         },
         tertiary: {
             base: 'hsla(59, 100%, 73%, 1.00)',      //
-            lighter: 'hsla(59, 100%, 83%, 1.00)',   //+17, +10
+            lighter: 'hsla(59, 100%, 93%, 1.00)',   //+17, +10
             dimmed: 'hsla(59, 40%, 21%, 1.00)'     //-60, -62
         }
     },
