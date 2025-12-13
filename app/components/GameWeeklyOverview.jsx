@@ -5,8 +5,11 @@ import {hairlineWidth} from "react-native/Libraries/StyleSheet/StyleSheetExports
 import { Dimensions } from 'react-native';
 import {Ring} from "./HealthRings/Ring/Ring";
 import {SymbolView} from "expo-symbols";
+import {useGetUserGameStandingQuery} from "../hooks/useGetUserGameStandingQuery";
 
-export const GameWeeklyOverview = () => {
+export const GameWeeklyOverview = ({userGameId}) => {
+    const userGameStandingQuery = useGetUserGameStandingQuery(userGameId, true);
+    console.log(userGameStandingQuery);
     return <View style={{borderColor: 'red', borderWidth: 0, width: '100%'}}>
         <FlatList pagingEnabled contentContainerStyle={{}} horizontal data={[1, 2, 3]} renderItem={({item}) => <Week/>} keyExtractor={item => item.toString()}/>
     </View>
@@ -25,7 +28,7 @@ const Week = () => {
         //       trackWidth={6}
         //       size={40}
         //       />
-        <Ring size={40} trackWidth={4} trackPadding={2}
+        <Ring size={40} trackWidth={5} trackPadding={2}
               ringInfo={[
                   {
                       bgColor: colors.brand.dimmed,
@@ -36,11 +39,11 @@ const Week = () => {
                       bgColor: colors.ring.tertiary.dimmed,
                       gradient: { start: colors.ring.tertiary.base, end: colors.ring.tertiary.lighter },
                       fill: 80,
-                  },
-                  {
-                      bgColor: colors.ring.secondary.dimmed,
-                      gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                      fill: 70,
+                  // },
+                  // {
+                  //     bgColor: colors.ring.secondary.dimmed,
+                  //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
+                  //     fill: 70,
                   }]}   />
     )}
     </View>

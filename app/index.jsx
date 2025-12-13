@@ -66,7 +66,7 @@ ${formatDateRange(currentGameQuery.data?.games?.start_date, currentGameQuery.dat
 
             {currentGameQuery.data?.games ? (
                     <>
-                        <GameWeeklyOverview/>
+                        <GameWeeklyOverview userGameId={currentGameQuery.data?.id}/>
                         <StepSyncer userId={session.user.id}/>
                         <StepInformation userId={session.user.id}/>
                         <GameInfo game={currentGameQuery.data?.games}/></>

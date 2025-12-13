@@ -29,7 +29,7 @@ type Props = {
     trackPadding?: number;
 };
 
-export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000000', gradient: { start: '#000000', end: '#000000' }, fill: 0, icon: null }], trackWidth = 35, trackPadding=5 }) => {
+export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000000', gradient: { start: '#000000', end: '#000000' }, fill: 0, icon: null }], trackWidth = 40, trackPadding=5 }) => {
     const circle = ringInfo.map((ring, index) => {
         const radius = size / 2 - trackWidth / 2 - index * (trackWidth + trackPadding);
         return {

@@ -23,12 +23,12 @@ function StepInformation({ userId }) {
                         gradient: { start: colors.ring.tertiary.base, end: colors.ring.tertiary.lighter },
                         fill: 80,
                         icon: <SymbolView name="chevron.forward.2" tintColor="black" weight={"bold"} size={28} />
-                    },
-                    {
-                        bgColor: colors.ring.secondary.dimmed,
-                        gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                        fill: 70,
-                        icon: <SymbolView name="flame.fill" tintColor="black" weight={"bold"} size={28} />
+                    // },
+                    // {
+                    //     bgColor: colors.ring.secondary.dimmed,
+                    //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
+                    //     fill: 70,
+                    //     icon: <SymbolView name="flame.fill" tintColor="black" weight={"bold"} size={28} />
                     }]}/>
         </View>
         <Text style={{
