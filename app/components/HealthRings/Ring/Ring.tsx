@@ -43,7 +43,7 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
     useEffect(() => {
         animatedOffsets.forEach((animatedOffset, index) => {
             animatedOffset.value = withTiming(
-                circle[index].circumference - (circle[index].circumference * ringInfo[index].fill) / 100,
+                circle[index].circumference - (circle[index].circumference * Math.min(ringInfo[index].fill, 100)) / 100,
                 {
                     duration: 1500,
                     easing: Easing.out(Easing.circle),
@@ -69,11 +69,12 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
             {ringInfo.map((ring, index) => (
             ring.icon && (
                 <View
+                    key={index}
                     style={{
                         position: 'absolute',
-                        top: -14,
+                        top: -19,
                         left: '50%',
-                        transform: [{ translateX: -14 }], // assuming icon is 32px wide
+                        transform: [{ translateX: -19 }], // assuming icon is 38px wide
                         zIndex: 1,
                         backgroundColor: 'transparent',
                         paddingTop: trackWidth / 2 + index * (trackWidth + trackPadding),
@@ -87,7 +88,7 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
                 <Defs>
                     {ringInfo.map((ringInfo, index) => {
                         return (
-                            <LinearGradient id={`gradient${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                            <LinearGradient key={index}id={`gradient${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
                                 <Stop offset="0%" stopColor={ringInfo.gradient.start as string} />
                                 <Stop offset="100%" stopColor={ringInfo.gradient.end as string} />
                             </LinearGradient>
@@ -96,11 +97,12 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
                 </Defs>
                 <G rotation={-90} originX={size / 2} originY={size / 2}>
                     {ringInfo.map((ringInfo, index) => {
-                        return (<Circle cx='50%' cy='50%' r={circle[index].radius} stroke={ringInfo.bgColor as string} fill="transparent"
+                        return (<Circle key={index} cx='50%' cy='50%' r={circle[index].radius} stroke={ringInfo.bgColor as string} fill="transparent"
                             strokeWidth={trackWidth} />)
                     })}
                     {ringInfo.map((ringInfo, index) => {
                         return (<AnimatedCircle
+                            key={index}
                             r={circle[index].radius}
                             cx='50%'
                             cy='50%'

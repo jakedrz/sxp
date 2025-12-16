@@ -5,9 +5,15 @@ import { Ring } from "@/app/components/HealthRings/Ring/Ring";
 
 import { useState, useEffect } from "react";
 import { useGetUsersMostRecentGame } from "../hooks/useGetUsersMostRecentGame";
+import { useGetTodaysSteps } from "../hooks/useGetTodaysSteps";
+import { useGetUserGameStandingQuery } from "../hooks/useGetUserGameStandingQuery";
 
-function StepInformation({ userId }) {
-    const pastStepCount = 5000
+function StepInformation({ currentGame }) {
+    console.log(JSON.stringify(currentGame, null, 2));
+    const goal = currentGame?.games?.game_types?.goal_light;
+    const todaysStepsQuery = useGetTodaysSteps(currentGame.user_id, true);
+    console.log(JSON.stringify(todaysStepsQuery))
+    const pastStepCount = todaysStepsQuery.data;
     return <>
         <View style={{ paddingVertical: 40 }}>
             <Ring size='300'
@@ -15,21 +21,16 @@ function StepInformation({ userId }) {
                     {
                         bgColor: colors.brand.dimmed,
                         gradient: { start: colors.brand, end: colors.brand.lighter },
-                        fill: 100,
-                        icon: <SymbolView name="chevron.forward" tintColor="black" weight={"bold"} size={28} />
-                    },
-                    {
-                        bgColor: colors.ring.tertiary.dimmed,
-                        gradient: { start: colors.ring.tertiary.base, end: colors.ring.tertiary.lighter },
-                        fill: 80,
-                        icon: <SymbolView name="chevron.forward.2" tintColor="black" weight={"bold"} size={28} />
+                        fill: pastStepCount / goal * 100,
+                        icon: <SymbolView name="chevron.forward" tintColor="black" weight={"bold"} size={38} />
                     // },
                     // {
                     //     bgColor: colors.ring.secondary.dimmed,
                     //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                    //     fill: 70,
-                    //     icon: <SymbolView name="flame.fill" tintColor="black" weight={"bold"} size={28} />
-                    }]}/>
+                    //     fill: 80,
+                    //     icon: <SymbolView name="chevron.forward.2" tintColor="black" weight={"bold"} size={28} />
+                    }]}
+                    trackWidth={60}/>
         </View>
         <Text style={{
             color: colors.label.primary,
@@ -44,7 +45,7 @@ function StepInformation({ userId }) {
             color: colors.brand.dynamic,
             width: "100%",
             paddingHorizontal: "20"
-        }}>{pastStepCount.toLocaleString()}/10,000</Text>
+        }}>{pastStepCount.toLocaleString()}/{goal.toLocaleString()}</Text>
     </>;
 }
 

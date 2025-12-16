@@ -38,7 +38,7 @@ export default function Home() {
         queryFn: async () => {
             const {data, error} = await supabase
                 .from('user_games')
-                .select('id, user_id, games (id, title, entry_cost, start_date, end_date, game_types (title)), status, joined_at, forfeited_at, won_at, lost_at')
+                .select('id, user_id, games (id, title, entry_cost, start_date, end_date, game_types (title, goal_light, days_light)), status, joined_at, forfeited_at, won_at, lost_at')
                 .eq('user_id', session.user.id)
                 .order('joined_at', {ascending: false})
                 .limit(1)
@@ -66,9 +66,9 @@ ${formatDateRange(currentGameQuery.data?.games?.start_date, currentGameQuery.dat
 
             {currentGameQuery.data?.games ? (
                     <>
-                        <GameWeeklyOverview userGameId={currentGameQuery.data?.id}/>
+                        <GameWeeklyOverview currentGame={currentGameQuery.data}/>
                         <StepSyncer userId={session.user.id}/>
-                        <StepInformation userId={session.user.id}/>
+                        <StepInformation currentGame={currentGameQuery.data}/>
                         <GameInfo game={currentGameQuery.data?.games}/></>
                 )
                 : <Text style={{color: colors.label.primary}}>You are not currently in a game. Join a game to start
