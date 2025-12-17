@@ -88,7 +88,7 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
                 <Defs>
                     {ringInfo.map((ringInfo, index) => {
                         return (
-                            <LinearGradient key={index}id={`gradient${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                            <LinearGradient key={index}id={`gradient${index}`} x1="10%" y1="0%" x2="90%" y2="0%">
                                 <Stop offset="0%" stopColor={ringInfo.gradient.start as string} />
                                 <Stop offset="100%" stopColor={ringInfo.gradient.end as string} />
                             </LinearGradient>

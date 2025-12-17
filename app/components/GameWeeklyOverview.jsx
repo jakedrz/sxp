@@ -35,7 +35,7 @@ const Week = ({ days, goal }) => {
             ringInfo={[
                 {
                     bgColor: colors.brand.dimmed,
-                    gradient: { start: colors.brand, end: colors.brand.lighter },
+                    gradient: { start: colors.brand.base, end: colors.brand.lighter },
                     fill: day.steps / goal * 100,
                     //   },
                     //   {

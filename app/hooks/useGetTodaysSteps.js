@@ -2,8 +2,20 @@ import {useQuery} from "@tanstack/react-query";
 import {supabase} from "../utils/supabase";
 
 export function useGetTodaysSteps(userId, enabled) {
-    const currentDateString = new Date().toISOString().split('T')[0]+'T00:00:00Z';
-    const tomorrowDateString = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]+'T00:00:00Z';
+
+    // Replace UTC ISO strings with local-midnight date strings
+    function toLocalDateStringMidnight(date) {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}T00:00:00`;
+    }
+    const today = new Date();
+    const currentDateString = toLocalDateStringMidnight(today);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowDateString = toLocalDateStringMidnight(tomorrow);
+
     return useQuery({
         enabled: enabled,
         queryKey: ['todaysSteps', userId, currentDateString],

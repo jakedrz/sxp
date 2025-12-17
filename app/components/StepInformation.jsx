@@ -12,7 +12,7 @@ function StepInformation({ currentGame }) {
     console.log(JSON.stringify(currentGame, null, 2));
     const goal = currentGame?.games?.game_types?.goal_light;
     const todaysStepsQuery = useGetTodaysSteps(currentGame.user_id, true);
-    console.log(JSON.stringify(todaysStepsQuery))
+    console.log(JSON.stringify(todaysStepsQuery, null, 2))
     const pastStepCount = todaysStepsQuery.data;
     return <>
         <View style={{ paddingVertical: 40 }}>
@@ -20,7 +20,7 @@ function StepInformation({ currentGame }) {
                 ringInfo={[
                     {
                         bgColor: colors.brand.dimmed,
-                        gradient: { start: colors.brand, end: colors.brand.lighter },
+                        gradient: { start: colors.brand.base, end: colors.brand.lighter },
                         fill: pastStepCount / goal * 100,
                         icon: <SymbolView name="chevron.forward" tintColor="black" weight={"bold"} size={38} />
                     // },
