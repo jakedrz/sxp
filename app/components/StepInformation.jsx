@@ -42,6 +42,8 @@ function StepInformation({ currentGame }) {
             Count</Text>
         <Text style={{
             fontSize: "36",
+            fontFamily: 'ui-rounded',
+            fontWeight: '500',
             color: colors.brand.dynamic,
             width: "100%",
             paddingHorizontal: "20"

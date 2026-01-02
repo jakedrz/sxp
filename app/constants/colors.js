@@ -38,5 +38,6 @@ export const colors = {
             tertiary: PlatformColor('tertiarySystemGroupedBackground'),
         }
     },
-    separator: PlatformColor('opaqueSeparator')
+    separator: PlatformColor('opaqueSeparator'),
+    gray: PlatformColor('gray')
 }
