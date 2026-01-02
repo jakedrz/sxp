@@ -32,7 +32,7 @@ const Week = ({days, goal}) => {
         {days.map((day, i) =>
             // <Ring size={40} trackWidth={5} trackPadding={2} //good for 2 rings
             <View key={day.date} style={{alignItems: 'center'}}>
-                <DayLabel date={new Date()} color={(i===0) ? colors.brand.base : null}/>
+                <DayLabel date={new Date()} color={(i===4) ? colors.brand.base : null}/>
                 <Ring size={38} trackWidth={7} trackPadding={2} //good for 1 ring
                                        ringInfo={[
                                            {
@@ -56,9 +56,9 @@ const Week = ({days, goal}) => {
     </View>
 }
 
-const DayLabel = (date, color=null) => {
+const DayLabel = ({date, color = null}) => {
     const diameter = 18;
-    const textColor = color ? colors.label.secondary : colors.label.primary;
+    const textColor = color ? colors.label.primary : colors.label.secondary;
     return <View style={{ marginBottom: 8, height: diameter, width: diameter, borderRadius: diameter/2, backgroundColor: color, alignItems: 'center' }}>
         <Text style={{color: textColor, fontSize: 12, lineHeight: diameter}}>
             {new Date().toLocaleDateString('en-US', { weekday: 'short' }).charAt(0)}
