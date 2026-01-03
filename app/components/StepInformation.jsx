@@ -43,7 +43,7 @@ function StepInformation({ currentGame }) {
         <Text style={{
             fontSize: "36",
             fontFamily: 'ui-rounded',
-            fontWeight: '500',
+            fontWeight: '600',
             color: colors.brand.dynamic,
             width: "100%",
             paddingHorizontal: "20"

@@ -31,25 +31,26 @@ const Week = ({days, goal}) => {
     }}>
         {days.map((day, i) =>
             // <Ring size={40} trackWidth={5} trackPadding={2} //good for 2 rings
+
             <View key={day.date} style={{alignItems: 'center'}}>
-                <DayLabel date={new Date()} color={(i===4) ? colors.brand.base : null}/>
+                <DayLabel date={day.date} color={(i === 4) ? colors.brand.base : null}/>
                 <Ring size={38} trackWidth={7} trackPadding={2} //good for 1 ring
-                                       ringInfo={[
-                                           {
-                                               bgColor: colors.brand.dimmed,
-                                               gradient: {start: colors.brand.base, end: colors.brand.lighter},
-                                               fill: day.steps / goal * 100,
-                                               //   },
-                                               //   {
-                                               //       bgColor: colors.ring.secondary.dimmed,
-                                               //       gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                                               //       fill: 80,
-                                               // },
-                                               // {
-                                               //     bgColor: colors.ring.secondary.dimmed,
-                                               //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                                               //     fill: 70,
-                                           }]}/>
+                      ringInfo={[
+                          {
+                              bgColor: colors.brand.dimmed,
+                              gradient: {start: colors.brand.base, end: colors.brand.lighter},
+                              fill: day.steps / goal * 100,
+                              //   },
+                              //   {
+                              //       bgColor: colors.ring.secondary.dimmed,
+                              //       gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
+                              //       fill: 80,
+                              // },
+                              // {
+                              //     bgColor: colors.ring.secondary.dimmed,
+                              //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
+                              //     fill: 70,
+                          }]}/>
 
             </View>
         )}
@@ -59,9 +60,17 @@ const Week = ({days, goal}) => {
 const DayLabel = ({date, color = null}) => {
     const diameter = 18;
     const textColor = color ? colors.label.primary : colors.label.secondary;
-    return <View style={{ marginBottom: 8, height: diameter, width: diameter, borderRadius: diameter/2, backgroundColor: color, alignItems: 'center' }}>
+    const dateObj = new Date(Date.parse(date));
+    return <View style={{
+        marginBottom: 8,
+        height: diameter,
+        width: diameter,
+        borderRadius: diameter / 2,
+        backgroundColor: color,
+        alignItems: 'center'
+    }}>
         <Text style={{color: textColor, fontSize: 12, lineHeight: diameter}}>
-            {new Date().toLocaleDateString('en-US', { weekday: 'short' }).charAt(0)}
+            {dateObj.toUTCString().charAt(0)}
         </Text>
     </View>;
 }

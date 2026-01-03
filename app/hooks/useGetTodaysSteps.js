@@ -3,13 +3,15 @@ import {supabase} from "../utils/supabase";
 
 export function useGetTodaysSteps(userId, enabled) {
 
-    // Replace UTC ISO strings with local-midnight date strings
+    // Replace UTC ISO strings with local-midnight date strings (adjusted to UTC)
     function toLocalDateStringMidnight(date) {
-        const y = date.getFullYear();
-        const m = String(date.getMonth() + 1).padStart(2, '0');
-        const d = String(date.getDate()).padStart(2, '0');
-        return `${y}-${m}-${d}T00:00:00`;
+        // create a Date at local midnight (this captures the local timezone)
+        const localMidnight = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+        // convert that instant to a UTC ISO string so DB comparisons (stored in UTC) are correct
+        // remove milliseconds for consistency (e.g. "2026-01-03T05:00:00Z")
+        return localMidnight.toISOString().replace(/\.\d{3}Z$/, 'Z');
     }
+
     const today = new Date();
     const currentDateString = toLocalDateStringMidnight(today);
     const tomorrow = new Date(today);
