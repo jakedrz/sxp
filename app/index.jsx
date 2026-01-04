@@ -97,7 +97,7 @@ const GameInfo = ({game}) => {
 const InfoBit = ({title, value, total = undefined}) => {
     return (<View>
         <Text style={{color: colors.label.primary, fontWeight: '700', fontSize: '14'}}>{title.toUpperCase()}</Text>
-        <Text style={{color: colors.label.secondary, fontSize: '24'}}>{value}{total ? ((<><Text
+        <Text style={{color: colors.label.secondary, fontSize: '24', fontFamily: 'ui-rounded'}}>{value}{total ? ((<><Text
             style={{color: colors.label.tertiary, fontSize: '20'}}> of </Text>{total}</>)) : null}</Text>
     </View>)
 }

@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
+    "supabase-start": "cd ../sxp-supabase && npx supabase start && npx supabase functions serve --env-file supabase/functions/.env.local & ngrok http 54321",
+    "supabase-stop": "cd ../sxp-supabase && npx supabase stop",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",

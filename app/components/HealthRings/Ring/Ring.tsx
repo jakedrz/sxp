@@ -17,7 +17,8 @@ type RingInfo = {
     bgColor: string,
     gradient: Gradient,
     fill: number,
-    icon: React.ReactNode
+    icon: React.ReactNode,
+    dimmed: boolean,
 }
 
 type Props = {
@@ -29,12 +30,13 @@ type Props = {
     trackPadding?: number;
 };
 
-export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000000', gradient: { start: '#000000', end: '#000000' }, fill: 0, icon: null }], trackWidth = 40, trackPadding=5 }) => {
+export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000000', gradient: { start: '#000000', end: '#000000' }, fill: 0, icon: null, dimmed: false }], trackWidth = 40, trackPadding=5 }) => {
     const circle = ringInfo.map((ring, index) => {
         const radius = size / 2 - trackWidth / 2 - index * (trackWidth + trackPadding);
         return {
             radius: radius,
-            circumference: radius * 2 * Math.PI
+            circumference: radius * 2 * Math.PI,
+            dimmed: ring.dimmed
         }
     });
     // Use shared value for animation
@@ -64,7 +66,7 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
             justifyContent: 'center',
             position: 'relative',
             width: { size },
-            height: { size }
+            height: { size },
         }}>
             {ringInfo.map((ring, index) => (
             ring.icon && (
@@ -84,7 +86,7 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
                 </View>
             )))
         }
-            <Svg height={size} width={size}>
+            <Svg height={size} width={size} >
                 <Defs>
                     {ringInfo.map((ringInfo, index) => {
                         return (
@@ -97,7 +99,7 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
                 </Defs>
                 <G rotation={-90} originX={size / 2} originY={size / 2}>
                     {ringInfo.map((ringInfo, index) => {
-                        return (<Circle key={index} cx='50%' cy='50%' r={circle[index].radius} stroke={ringInfo.bgColor as string} fill="transparent"
+                        return (<Circle key={index} opacity={circle[index].dimmed ? 0.5 : 1} cx='50%' cy='50%' r={circle[index].radius} stroke={ringInfo.bgColor as string} fill="transparent"
                             strokeWidth={trackWidth} />)
                     })}
                     {ringInfo.map((ringInfo, index) => {
@@ -112,6 +114,7 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
                             strokeDasharray={circle[index].circumference}
                             animatedProps={animatedProps[index]}
                             strokeLinecap="round"
+                            opacity={circle[index].dimmed ? 0.1 : 1}
                         />
                         )
                     })}

@@ -33,13 +33,14 @@ const Week = ({days, goal}) => {
             // <Ring size={40} trackWidth={5} trackPadding={2} //good for 2 rings
 
             <View key={day.date} style={{alignItems: 'center'}}>
-                <DayLabel date={day.date} color={(i === 4) ? colors.brand.base : null}/>
-                <Ring size={38} trackWidth={7} trackPadding={2} //good for 1 ring
+                <DayLabel date={day.date}/>
+                <Ring size={38} trackWidth={7} trackPadding={2}//good for 1 ring
                       ringInfo={[
                           {
                               bgColor: colors.brand.dimmed,
                               gradient: {start: colors.brand.base, end: colors.brand.lighter},
                               fill: day.steps / goal * 100,
+                              dimmed: !day.goalMet
                               //   },
                               //   {
                               //       bgColor: colors.ring.secondary.dimmed,
@@ -57,20 +58,48 @@ const Week = ({days, goal}) => {
     </View>
 }
 
-const DayLabel = ({date, color = null}) => {
+const DayLabel = ({date}) => {
+    const dateIsToday = isDateToday(date);
     const diameter = 18;
+    const color = dateIsToday ? colors.brand.dynamic : null;
     const textColor = color ? colors.label.primary : colors.label.secondary;
     const dateObj = new Date(Date.parse(date));
+    const today = new Date();
+    const fillCircle = dateIsToday;
     return <View style={{
         marginBottom: 8,
         height: diameter,
         width: diameter,
         borderRadius: diameter / 2,
-        backgroundColor: color,
-        alignItems: 'center'
+        backgroundColor: fillCircle ? color : null,
+        alignItems: 'center',
+        justifyContent: 'center',
     }}>
-        <Text style={{color: textColor, fontSize: 12, lineHeight: diameter}}>
+        <Text style={{color: textColor, fontSize: 12, fontWeight: isDateToday(date) ? '700': '500'}}>
             {dateObj.toUTCString().charAt(0)}
         </Text>
     </View>;
+}
+
+const isDateToday = (dateString) => {
+    // Accept "YYYY-MM-DD" or "YYYY-MM-DDT..." — only use the date portion
+    if (!dateString) return false;
+    const datePart = dateString.split('T')[0];
+    const parts = datePart.split('-');
+    if (parts.length !== 3) return false;
+
+    const [y, m, d] = parts;
+    const year = parseInt(y, 10);
+    const monthIndex = parseInt(m, 10) - 1; // JS months are 0-based
+    const day = parseInt(d, 10);
+
+    if (Number.isNaN(year) || Number.isNaN(monthIndex) || Number.isNaN(day)) return false;
+
+    // Construct a local-midnight Date for the given date
+    const localDate = new Date(year, monthIndex, day);
+
+    const now = new Date();
+    return localDate.getFullYear() === now.getFullYear()
+        && localDate.getMonth() === now.getMonth()
+        && localDate.getDate() === now.getDate();
 }
