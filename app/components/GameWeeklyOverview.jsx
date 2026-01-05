@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import {Dimensions, FlatList, Text, View} from 'react-native';
 import {colors} from "../constants/colors";
 import {Ring} from "./HealthRings/Ring/Ring";
@@ -6,15 +6,36 @@ import {useGetUserGameStandingQuery} from "../hooks/useGetUserGameStandingQuery"
 
 export const GameWeeklyOverview = ({currentGame}) => {
     const userGameStandingQuery = useGetUserGameStandingQuery(currentGame?.id, true);
+    const flatListRef = useRef(null);
+    const screenWidth = Dimensions.get('window').width;
+    const weeks = userGameStandingQuery.data || [];
+    const computedInitialIndex = Math.max(0, weeks.findIndex(w => w.some(day => isDateToday(day.date))));
+
+    useEffect(() => {
+        // Scroll when data becomes available
+        if (!weeks.length || !flatListRef.current) return;
+        const idx = weeks.findIndex(w => w.some(day => isDateToday(day.date)));
+        if (idx >= 0) {
+            try {
+                flatListRef.current.scrollToIndex({index: idx, animated: false});
+            } catch (e) {
+                // fallback: ignore if layout not ready
+            }
+        }
+    }, [weeks]);
     const goal = currentGame?.games?.game_types?.goal_light;
     return <View style={{borderColor: 'red', borderWidth: 0, width: '100%'}}>
         <FlatList
             pagingEnabled
             horizontal
             showsHorizontalScrollIndicator={false}
+            ref={flatListRef}
             data={userGameStandingQuery.data}
             renderItem={({item}) => <Week days={item} goal={goal}/>}
-            keyExtractor={(item, index) => index}/>
+            keyExtractor={(item, index) => String(index)}
+            initialScrollIndex={computedInitialIndex}
+            getItemLayout={(_, index) => ({length: screenWidth, offset: screenWidth * index, index})}
+        />
     </View>
 }
 
