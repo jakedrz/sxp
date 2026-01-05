@@ -35,6 +35,7 @@ export function useGetTodaysSteps(userId, enabled) {
             }, 0);
             return totalSteps;
         },
-        placeholderData: 0
+        placeholderData: 0,
+        refetchInterval: 2000,
     });
 }

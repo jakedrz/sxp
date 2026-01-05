@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, Easing } from "react-native";
 import { colors } from "../constants/colors";
 import { SymbolView } from "expo-symbols";
 import { Ring } from "@/app/components/HealthRings/Ring/Ring";
@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import { useGetUsersMostRecentGame } from "../hooks/useGetUsersMostRecentGame";
 import { useGetTodaysSteps } from "../hooks/useGetTodaysSteps";
 import { useGetUserGameStandingQuery } from "../hooks/useGetUserGameStandingQuery";
+
+import AnimatedNumbers from "react-native-animated-numbers";
 
 function StepInformation({ currentGame }) {
     console.log(JSON.stringify(currentGame, null, 2));
@@ -40,14 +42,35 @@ function StepInformation({ currentGame }) {
             paddingTop: "0"
         }}>Step
             Count</Text>
-        <Text style={{
-            fontSize: "36",
-            fontFamily: 'ui-rounded',
-            fontWeight: '600',
-            color: colors.brand.dynamic,
-            width: "100%",
-            paddingHorizontal: "20"
-        }}>{pastStepCount.toLocaleString()}/{goal.toLocaleString()}</Text>
+        {/*<Text style={{*/}
+        {/*    fontSize: "36",*/}
+        {/*    fontFamily: 'ui-rounded',*/}
+        {/*    fontWeight: '600',*/}
+        {/*    color: colors.brand.dynamic,*/}
+        {/*    width: "100%",*/}
+        {/*    paddingHorizontal: "20"*/}
+        {/*}}>{pastStepCount.toLocaleString()}/{goal.toLocaleString()}</Text>*/}
+        <View style={{flexDirection: 'row', width: '100%', paddingHorizontal: 20}}>
+            <AnimatedNumbers
+            animateToNumber={pastStepCount}
+            includeComma
+            easing={Easing.out(Easing.exp)}
+            animationDuration={1400}
+            fontStyle={{
+                fontSize: '36',
+                fontFamily: 'ui-rounded',
+                fontWeight: '600',
+                color: colors.brand.dynamic,
+                fontVariant: ['tabular-nums'],
+            }}/>
+            <Text style={{
+                fontSize: "36",
+                fontFamily: 'ui-rounded',
+                fontWeight: '600',
+                color: colors.brand.dynamic,
+                fontVariant: ['tabular-nums']
+            }}>/{goal.toLocaleString()}</Text>
+        </View>
     </>;
 }
 
