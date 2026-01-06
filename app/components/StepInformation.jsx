@@ -1,4 +1,4 @@
-import { Text, View, Easing } from "react-native";
+import { Text, View } from "react-native";
 import { colors } from "../constants/colors";
 import { SymbolView } from "expo-symbols";
 import { Ring } from "@/app/components/HealthRings/Ring/Ring";
@@ -8,7 +8,8 @@ import { useGetUsersMostRecentGame } from "../hooks/useGetUsersMostRecentGame";
 import { useGetTodaysSteps } from "../hooks/useGetTodaysSteps";
 import { useGetUserGameStandingQuery } from "../hooks/useGetUserGameStandingQuery";
 
-import AnimatedNumbers from "react-native-animated-numbers";
+import { AnimatedRollingNumber } from "react-native-animated-rolling-numbers";
+import { Easing } from "react-native-reanimated";
 
 function StepInformation({ currentGame }) {
     console.log(JSON.stringify(currentGame, null, 2));
@@ -51,17 +52,16 @@ function StepInformation({ currentGame }) {
         {/*    paddingHorizontal: "20"*/}
         {/*}}>{pastStepCount.toLocaleString()}/{goal.toLocaleString()}</Text>*/}
         <View style={{flexDirection: 'row', width: '100%', paddingHorizontal: 20}}>
-            <AnimatedNumbers
-            animateToNumber={pastStepCount}
-            includeComma
-            easing={Easing.out(Easing.exp)}
-            animationDuration={1400}
-            fontStyle={{
+            <AnimatedRollingNumber
+            value={pastStepCount}
+            spinningAnimationConfig={{duration: 2000, easing: Easing.out(Easing.exp)}}
+            useGrouping
+            numberStyle={{fontVariant: ['tabular-nums']}}
+            textStyle={{
                 fontSize: '36',
                 fontFamily: 'ui-rounded',
                 fontWeight: '600',
                 color: colors.brand.dynamic,
-                fontVariant: ['tabular-nums'],
             }}/>
             <Text style={{
                 fontSize: "36",

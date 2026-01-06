@@ -24,7 +24,7 @@ export const GameWeeklyOverview = ({currentGame}) => {
         }
     }, [weeks]);
     const goal = currentGame?.games?.game_types?.goal_light;
-    return <View style={{borderColor: 'red', borderWidth: 0, width: '100%'}}>
+    return <View style={{borderColor: 'red', borderWidth: 0, width: '100%', minHeight: 72}}>
         <FlatList
             pagingEnabled
             horizontal
@@ -54,14 +54,14 @@ const Week = ({days, goal}) => {
             // <Ring size={40} trackWidth={5} trackPadding={2} //good for 2 rings
 
             <View key={day.date} style={{alignItems: 'center'}}>
-                <DayLabel date={day.date}/>
+                <DayLabel date={day.date} goalMet={day.goalMet}/>
                 <Ring size={38} trackWidth={7} trackPadding={2}//good for 1 ring
                       ringInfo={[
                           {
                               bgColor: colors.brand.dimmed,
                               gradient: {start: colors.brand.base, end: colors.brand.lighter},
                               fill: day.steps / goal * 100,
-                              dimmed: !day.goalMet
+                              // dimmed: !day.goalMet
                               //   },
                               //   {
                               //       bgColor: colors.ring.secondary.dimmed,
@@ -79,14 +79,13 @@ const Week = ({days, goal}) => {
     </View>
 }
 
-const DayLabel = ({date}) => {
+const DayLabel = ({date, goalMet}) => {
     const dateIsToday = isDateToday(date);
     const diameter = 18;
-    const color = dateIsToday ? colors.brand.dynamic : null;
+    const color = goalMet ? colors.brand.dynamic : dateIsToday ? colors.gray : null;
     const textColor = color ? colors.label.primary : colors.label.secondary;
     const dateObj = new Date(Date.parse(date));
-    const today = new Date();
-    const fillCircle = dateIsToday;
+    const fillCircle = goalMet || dateIsToday;
     return <View style={{
         marginBottom: 8,
         height: diameter,
@@ -96,7 +95,7 @@ const DayLabel = ({date}) => {
         alignItems: 'center',
         justifyContent: 'center',
     }}>
-        <Text style={{color: textColor, fontSize: 12, fontWeight: isDateToday(date) ? '700': '500'}}>
+        <Text style={{color: textColor, fontSize: 12, fontWeight: dateIsToday ? '700': '500'}}>
             {dateObj.toUTCString().charAt(0)}
         </Text>
     </View>;

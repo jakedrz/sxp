@@ -39,5 +39,5 @@ export const colors = {
         }
     },
     separator: PlatformColor('opaqueSeparator'),
-    gray: PlatformColor('gray')
+    gray: PlatformColor('systemGray3')
 }
