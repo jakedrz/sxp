@@ -47,15 +47,14 @@ function StepInformation({ currentGame }) {
     //     fill: pastStepCount / goal * 100,
     //     icon: <SymbolView name={ringColors.icon} tintColor="black" weight={"bold"} size={38} />}
     // })
-
     return <>
         <View style={{ paddingVertical: 40 }}>
             <Ring size='300'
                 ringInfo={[
                     {
-                        bgColor: colors.brand.dimmed,
-                        gradient: { start: colors.brand.base, end: colors.brand.lighter },
-                        fill: pastStepCount / goal * 100,
+                        // bgColor: colors.brand.dimmed,
+                        // gradient: { start: colors.brand.base, end: colors.brand.lighter },
+                        fill: pastStepCount / goal[0] * 100,
                         icon: <SymbolView name="chevron.forward" tintColor="black" weight={"bold"} size={38} />
                     // },
                     // {
@@ -100,7 +99,7 @@ function StepInformation({ currentGame }) {
                 fontWeight: '600',
                 color: colors.brand.dynamic,
                 fontVariant: ['tabular-nums']
-            }}>/{goal.toLocaleString()}</Text>
+            }}>/{goal[0].toLocaleString()}</Text>
         </View>
     </>;
 }

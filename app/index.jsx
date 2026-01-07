@@ -38,7 +38,7 @@ export default function Home() {
         queryFn: async () => {
             const {data, error} = await supabase
                 .from('user_games')
-                .select('id, user_id, games (id, title, entry_cost, start_date, end_date, game_types (title, goal_light, days_light)), status, joined_at, forfeited_at, won_at, lost_at')
+                .select('id, user_id, games (id, title, entry_cost, start_date, end_date, game_types (title, goal_light, days_light, goal_medium, days_medium, goal_heavy, days_heavy)), status, joined_at, forfeited_at, won_at, lost_at')
                 .eq('user_id', session.user.id)
                 .order('joined_at', {ascending: false})
                 .limit(1)

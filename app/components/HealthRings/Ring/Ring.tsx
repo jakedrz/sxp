@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { OpaqueColorValue } from 'react-native';
 import { ReactNode } from 'react';
 import Svg, { Circle, G, Defs, LinearGradient, Stop } from 'react-native-svg';
-import ringMap from '../../../constants/ringMap';
+import ringMap, {iconSizesByRingCount} from '../../../constants/ringMap';
 import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from 'react-native-reanimated';
 
 // AnimatedCircle for reanimated v2+
@@ -89,19 +89,20 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: null,
             <Svg height={size} width={size} >
                 <Defs>
                     {ringInfo.map((ringInfo, index) => {
-                        const startColor = ringInfo.gradient.start === null ;
-                        const endColor = ringInfo.gradient.end;
+                        const startColor = ringInfo?.gradient?.start == null ? ringMap[index].gradientStart : ringInfo?.gradient?.start;
+                        const endColor = ringInfo?.gradient?.end == null ? ringMap[index].gradientEnd : ringInfo?.gradient?.end;
                         return (
                             <LinearGradient key={index}id={`gradient${index}`} x1="10%" y1="0%" x2="90%" y2="0%">
-                                <Stop offset="0%" stopColor={ringInfo.gradient.start as string} />
-                                <Stop offset="100%" stopColor={ringInfo.gradient.end as string} />
+                                <Stop offset="0%" stopColor={startColor as string} />
+                                <Stop offset="100%" stopColor={endColor as string} />
                             </LinearGradient>
                         )
                     })}
                 </Defs>
                 <G rotation={-90} originX={size / 2} originY={size / 2}>
                     {ringInfo.map((ringInfo, index) => {
-                        return (<Circle key={index} opacity={circle[index].dimmed ? 0.5 : 1} cx='50%' cy='50%' r={circle[index].radius} stroke={ringInfo.bgColor as string} fill="transparent"
+                        const dimColor = ringInfo.bgColor == null ? ringMap[index].colorDimmed : ringInfo.bgColor;
+                        return (<Circle key={index} opacity={circle[index].dimmed ? 0.5 : 1} cx='50%' cy='50%' r={circle[index].radius} stroke={dimColor as string} fill="transparent"
                             strokeWidth={trackWidth} />)
                     })}
                     {ringInfo.map((ringInfo, index) => {

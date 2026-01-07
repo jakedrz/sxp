@@ -1,4 +1,4 @@
-import colors from './colors';
+import {colors} from './colors';
 
 export const ringMap = [
     {
@@ -20,5 +20,7 @@ export const ringMap = [
         icon: "flame.fill",
     }
 ];
+
+export const iconSizesByRingCount = [38,28,22];
 
 export default ringMap;
