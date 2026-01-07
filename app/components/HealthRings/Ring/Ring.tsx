@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { OpaqueColorValue } from 'react-native';
 import { ReactNode } from 'react';
 import Svg, { Circle, G, Defs, LinearGradient, Stop } from 'react-native-svg';
+import ringMap from '../../../constants/ringMap';
 import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from 'react-native-reanimated';
 
 // AnimatedCircle for reanimated v2+
@@ -29,8 +30,7 @@ type Props = {
     trackWidth?: number;
     trackPadding?: number;
 };
-
-export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000000', gradient: { start: '#000000', end: '#000000' }, fill: 0, icon: null, dimmed: false }], trackWidth = 40, trackPadding=5 }) => {
+export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: null, gradient: { start: null, end: null }, fill: 0, icon: null, dimmed: false }], trackWidth = 40, trackPadding=5 }) => {
     const circle = ringInfo.map((ring, index) => {
         const radius = size / 2 - trackWidth / 2 - index * (trackWidth + trackPadding);
         return {
@@ -69,7 +69,7 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
             height: { size },
         }}>
             {ringInfo.map((ring, index) => (
-            ring.icon && (
+                (ring.icon !== undefined) && (
                 <View
                     key={index}
                     style={{
@@ -82,13 +82,15 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: '#000
                         paddingTop: trackWidth / 2 + index * (trackWidth + trackPadding),
                     }}
                 >
-                    {ring.icon}
+                    {ring.icon === null ? ringMap[index].icon : ring.icon}
                 </View>
             )))
         }
             <Svg height={size} width={size} >
                 <Defs>
                     {ringInfo.map((ringInfo, index) => {
+                        const startColor = ringInfo.gradient.start === null ;
+                        const endColor = ringInfo.gradient.end;
                         return (
                             <LinearGradient key={index}id={`gradient${index}`} x1="10%" y1="0%" x2="90%" y2="0%">
                                 <Stop offset="0%" stopColor={ringInfo.gradient.start as string} />

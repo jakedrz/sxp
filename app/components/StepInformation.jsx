@@ -13,10 +13,41 @@ import { Easing } from "react-native-reanimated";
 
 function StepInformation({ currentGame }) {
     console.log(JSON.stringify(currentGame, null, 2));
-    const goal = currentGame?.games?.game_types?.goal_light;
+    const goal = [
+        currentGame?.games?.game_types?.goal_light,
+        currentGame?.games?.game_types?.goal_medium,
+        currentGame?.games?.game_types?.goal_heavy
+    ];
     const todaysStepsQuery = useGetTodaysSteps(currentGame.user_id, true);
     console.log(JSON.stringify(todaysStepsQuery, null, 2))
     const pastStepCount = todaysStepsQuery.data;
+    // let ringColors = undefined;
+    // const rings = goal.map((goal, i) => {
+    //     switch(i) {
+    //         case 0:
+    //             ringColors = {
+    //                 bgColor: colors.brand.dimmed,
+    //                 start: colors.brand.base,
+    //                 end: colors.brand.lighter,
+    //                 icon: "chevron.forward"
+    //             }
+    //             break;
+    //         case 1:
+    //             ringColors = {
+    //                 bgColor: colors.ring.secondary.dimmed,
+    //                 start: colors.ring.secondary.base,
+    //                 end: colors.ring.secondary.lighter,
+    //                 icon: "chevron.forward.2"
+    //             }
+    //             break;
+    //     }
+    //
+    //     return {bgColor: ringColors.bgColor,
+    //     gradient: { start: ringColors.start, end: ringColors.end },
+    //     fill: pastStepCount / goal * 100,
+    //     icon: <SymbolView name={ringColors.icon} tintColor="black" weight={"bold"} size={38} />}
+    // })
+
     return <>
         <View style={{ paddingVertical: 40 }}>
             <Ring size='300'
