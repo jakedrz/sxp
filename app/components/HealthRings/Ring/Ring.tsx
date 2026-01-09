@@ -7,6 +7,8 @@ import ringMap, {iconSizesByRingCount, trackPaddingBySize, trackWidthByRingCount
 import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from 'react-native-reanimated';
 import {SymbolView} from "expo-symbols";
 
+//TODO: This shit needs hella refactoring. Focus on unassigned properties being assigned to the defaults in ringMap. Make this nice and clean
+
 // AnimatedCircle for reanimated v2+
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -32,7 +34,7 @@ type Props = {
     trackWidth?: number;
     trackPadding?: number;
 };
-export const Ring: React.FC<Props> = ({ size = 300, variant = "large", ringInfo = [{ bgColor: null, gradient: { start: null, end: null }, fill: 0, icon: undefined, dimmed: null }], trackWidth = undefined, trackPadding=undefined }) => {
+export const Ring: React.FC<Props> = ({ size = 300, variant = "large", ringInfo = [{ bgColor: null, gradient: { start: null, end: null }, fill: 0, icon: null, dimmed: null }], trackWidth = undefined, trackPadding=undefined }) => {
     const trackWidthValue = trackWidth === undefined ? trackWidthByRingCount[variant][ringInfo.length-1] : trackWidth;
     const trackPaddingValue = trackPadding === undefined ? trackPaddingBySize[variant] : trackPadding;
     const circle = ringInfo.map((ring, index) => {
@@ -73,15 +75,15 @@ export const Ring: React.FC<Props> = ({ size = 300, variant = "large", ringInfo 
             width: { size },
             height: { size },
         }}>
-            {ringInfo.map((ring, index) => (
-                (ring.icon !== undefined) && (
+            {ringInfo.map((ring, index) => { console.log(iconSizesByRingCount[ringInfo.length-1]); return (
+                (ring.icon !== null) && (
                 <View
                     key={index}
                     style={{
                         position: 'absolute',
-                        top: -19,
+                        top: -iconSizesByRingCount[ringInfo.length-1]/2,
                         left: '50%',
-                        transform: [{ translateX: -19 }], // assuming icon is 38px wide
+                        transform: [{ translateX: -iconSizesByRingCount[ringInfo.length-1]/2 }], // assuming icon is 38px wide
                         zIndex: 1,
                         backgroundColor: 'transparent',
                         paddingTop: trackWidthValue / 2 + index * (trackWidthValue + trackPaddingValue),
@@ -89,7 +91,7 @@ export const Ring: React.FC<Props> = ({ size = 300, variant = "large", ringInfo 
                 >
                     {ring.icon === undefined ? <SymbolView name={ringMap[index].icon} tintColor="black" weight={"bold"} size={iconSizesByRingCount[ringInfo.length-1]} /> : ring.icon}
                 </View>
-            )))
+            ))})
         }
             <Svg height={size} width={size} >
                 <Defs>

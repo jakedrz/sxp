@@ -64,7 +64,7 @@ const Week = ({days, goal}) => {
                 <Ring size={38} variant="small"//good for 1 ring
                       ringInfo={
 
-                          goal.map(x => x !== null ? ({fill: day.steps / x * 100, dimmed: false}) : null)
+                          goal.map(x => x !== null ? ({fill: day.steps / x * 100, dimmed: false, icon: null}) : null)
 
                                   //     // dimmed: !day.goalMet
                                   //     //   },
