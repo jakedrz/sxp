@@ -95,7 +95,7 @@ const DayLabel = ({date, goalMet}) => {
         alignItems: 'center',
         justifyContent: 'center',
     }}>
-        <Text style={{color: textColor, fontSize: 12, fontWeight: dateIsToday ? '700': '500'}}>
+        <Text style={{fontFamily: 'ui-rounded', color: textColor, fontSize: 12, fontWeight: dateIsToday ? '800': '400'}}>
             {dateObj.toUTCString().charAt(0)}
         </Text>
     </View>;

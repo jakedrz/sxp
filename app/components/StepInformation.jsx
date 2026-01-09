@@ -56,14 +56,15 @@ function StepInformation({ currentGame }) {
                         // gradient: { start: colors.brand.base, end: colors.brand.lighter },
                         fill: pastStepCount / goal[0] * 100,
                         icon: <SymbolView name="chevron.forward" tintColor="black" weight={"bold"} size={38} />
-                    // },
-                    // {
+                    },
+                    {
+                        fill: pastStepCount / goal[1] * 100,
+                        icon: <SymbolView name="chevron.forward.2" tintColor="black" weight={"bold"} size={38} />
                     //     bgColor: colors.ring.secondary.dimmed,
                     //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
                     //     fill: 80,
                     //     icon: <SymbolView name="chevron.forward.2" tintColor="black" weight={"bold"} size={28} />
-                    }]}
-                    trackWidth={60}/>
+                    }]}/>
         </View>
         <Text style={{
             color: colors.label.primary,
