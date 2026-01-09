@@ -17,7 +17,7 @@ function StepInformation({ currentGame }) {
         currentGame?.games?.game_types?.goal_light,
         currentGame?.games?.game_types?.goal_medium,
         currentGame?.games?.game_types?.goal_heavy
-    ];
+    ].filter(x => x !== null);
     const todaysStepsQuery = useGetTodaysSteps(currentGame.user_id, true);
     console.log(JSON.stringify(todaysStepsQuery, null, 2))
     const pastStepCount = todaysStepsQuery.data;
@@ -49,22 +49,24 @@ function StepInformation({ currentGame }) {
     // })
     return <>
         <View style={{ paddingVertical: 40 }}>
-            <Ring size='300'
-                ringInfo={[
-                    {
-                        // bgColor: colors.brand.dimmed,
-                        // gradient: { start: colors.brand.base, end: colors.brand.lighter },
-                        fill: pastStepCount / goal[0] * 100,
-                        icon: <SymbolView name="chevron.forward" tintColor="black" weight={"bold"} size={38} />
-                    },
-                    {
-                        fill: pastStepCount / goal[1] * 100,
-                        icon: <SymbolView name="chevron.forward.2" tintColor="black" weight={"bold"} size={38} />
-                    //     bgColor: colors.ring.secondary.dimmed,
-                    //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                    //     fill: 80,
-                    //     icon: <SymbolView name="chevron.forward.2" tintColor="black" weight={"bold"} size={28} />
-                    }]}/>
+            <Ring size='300' variant="large"
+                  ringInfo={
+
+                      goal.map(x => x !== null ? ({fill: pastStepCount / x * 100, dimmed: false}) : null)
+
+                      //     // dimmed: !day.goalMet
+                      //     //   },
+                      //     //   {
+                      //     //       bgColor: colors.ring.secondary.dimmed,
+                      //     //       gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
+                      //     //       fill: 80,
+                      //     // },
+                      //     // {
+                      //     //     bgColor: colors.ring.secondary.dimmed,
+                      //     //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
+                      //     //     fill: 70,
+
+                  }/>
         </View>
         <Text style={{
             color: colors.label.primary,

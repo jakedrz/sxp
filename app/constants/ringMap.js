@@ -32,5 +32,9 @@ export const trackWidthByRingCount = {
         5
     ]
 }
+export const trackPaddingBySize = {
+    large: 5,
+    small: 2
+}
 
 export default ringMap;

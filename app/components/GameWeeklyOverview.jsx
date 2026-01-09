@@ -23,7 +23,12 @@ export const GameWeeklyOverview = ({currentGame}) => {
             }
         }
     }, [weeks]);
-    const goal = currentGame?.games?.game_types?.goal_light;
+    const goal = [
+        currentGame?.games?.game_types?.goal_light,
+        currentGame?.games?.game_types?.goal_medium,
+        currentGame?.games?.game_types?.goal_heavy
+    ].filter(x => x !== null);
+
     return <View style={{borderColor: 'red', borderWidth: 0, width: '100%', minHeight: 72}}>
         <FlatList
             pagingEnabled
@@ -41,6 +46,7 @@ export const GameWeeklyOverview = ({currentGame}) => {
 
 const Week = ({days, goal}) => {
     const screenWidth = Dimensions.get('window').width;
+    console.log(goal.map(x => x))
     return <View style={{
         flexDirection: 'row',
         borderColor: 'green',
@@ -55,24 +61,24 @@ const Week = ({days, goal}) => {
 
             <View key={day.date} style={{alignItems: 'center'}}>
                 <DayLabel date={day.date} goalMet={day.goalMet}/>
-                <Ring size={38} trackWidth={7} trackPadding={2}//good for 1 ring
-                      ringInfo={[
-                          {
-                              bgColor: colors.brand.dimmed,
-                              gradient: {start: colors.brand.base, end: colors.brand.lighter},
-                              fill: day.steps / goal * 100,
-                              // dimmed: !day.goalMet
-                              //   },
-                              //   {
-                              //       bgColor: colors.ring.secondary.dimmed,
-                              //       gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                              //       fill: 80,
-                              // },
-                              // {
-                              //     bgColor: colors.ring.secondary.dimmed,
-                              //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                              //     fill: 70,
-                          }]}/>
+                <Ring size={38} variant="small"//good for 1 ring
+                      ringInfo={
+
+                          goal.map(x => x !== null ? ({fill: day.steps / x * 100, dimmed: false}) : null)
+
+                                  //     // dimmed: !day.goalMet
+                                  //     //   },
+                                  //     //   {
+                                  //     //       bgColor: colors.ring.secondary.dimmed,
+                                  //     //       gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
+                                  //     //       fill: 80,
+                                  //     // },
+                                  //     // {
+                                  //     //     bgColor: colors.ring.secondary.dimmed,
+                                  //     //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
+                                  //     //     fill: 70,
+
+                          }/>
 
             </View>
         )}
@@ -82,7 +88,7 @@ const Week = ({days, goal}) => {
 const DayLabel = ({date, goalMet}) => {
     const dateIsToday = isDateToday(date);
     const diameter = 18;
-    const color = goalMet ? colors.brand.dynamic : dateIsToday ? colors.gray : null;
+    const color = goalMet === "light" ? colors.brand.dynamic : goalMet === "medium" ? colors.ring.secondary.base : goalMet === "heavy" ? colors.ring.tertiary.base : dateIsToday ? colors.gray : null;
     const textColor = color ? colors.label.primary : colors.label.secondary;
     const dateObj = new Date(Date.parse(date));
     const fillCircle = goalMet || dateIsToday;
@@ -94,6 +100,7 @@ const DayLabel = ({date, goalMet}) => {
         backgroundColor: fillCircle ? color : null,
         alignItems: 'center',
         justifyContent: 'center',
+        // opacity: dateIsToday ? 1 : 0.5
     }}>
         <Text style={{fontFamily: 'ui-rounded', color: textColor, fontSize: 12, fontWeight: dateIsToday ? '800': '400'}}>
             {dateObj.toUTCString().charAt(0)}

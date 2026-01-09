@@ -3,8 +3,9 @@ import { View } from 'react-native';
 import { OpaqueColorValue } from 'react-native';
 import { ReactNode } from 'react';
 import Svg, { Circle, G, Defs, LinearGradient, Stop } from 'react-native-svg';
-import ringMap, {iconSizesByRingCount, trackWidthByRingCount} from '../../../constants/ringMap';
+import ringMap, {iconSizesByRingCount, trackPaddingBySize, trackWidthByRingCount} from '../../../constants/ringMap';
 import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from 'react-native-reanimated';
+import {SymbolView} from "expo-symbols";
 
 // AnimatedCircle for reanimated v2+
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -27,14 +28,16 @@ type Props = {
     ringInfo: Array<RingInfo>
     children?: ReactNode;
     size?: number;
+    variant?: 'small' | 'large';
     trackWidth?: number;
     trackPadding?: number;
 };
-export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: null, gradient: { start: null, end: null }, fill: 0, icon: null, dimmed: false }], trackWidth = undefined, trackPadding=5 }) => {
-    const trackWidthValue = trackWidth === undefined ? trackWidthByRingCount.large[ringInfo.length-1] : trackWidth;
+export const Ring: React.FC<Props> = ({ size = 300, variant = "large", ringInfo = [{ bgColor: null, gradient: { start: null, end: null }, fill: 0, icon: undefined, dimmed: null }], trackWidth = undefined, trackPadding=undefined }) => {
+    const trackWidthValue = trackWidth === undefined ? trackWidthByRingCount[variant][ringInfo.length-1] : trackWidth;
+    const trackPaddingValue = trackPadding === undefined ? trackPaddingBySize[variant] : trackPadding;
     const circle = ringInfo.map((ring, index) => {
 
-        const radius = size / 2 - trackWidthValue / 2 - index * (trackWidthValue + trackPadding);
+        const radius = size / 2 - trackWidthValue / 2 - index * (trackWidthValue + trackPaddingValue);
         return {
             radius: radius,
             circumference: radius * 2 * Math.PI,
@@ -61,7 +64,7 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: null,
         strokeDashoffset: animatedOffset.value,
     })));
 
-
+    // @ts-ignore
     return (
         <View style={{
             alignItems: 'center',
@@ -81,10 +84,10 @@ export const Ring: React.FC<Props> = ({ size = 300, ringInfo = [{ bgColor: null,
                         transform: [{ translateX: -19 }], // assuming icon is 38px wide
                         zIndex: 1,
                         backgroundColor: 'transparent',
-                        paddingTop: trackWidthValue / 2 + index * (trackWidthValue + trackPadding),
+                        paddingTop: trackWidthValue / 2 + index * (trackWidthValue + trackPaddingValue),
                     }}
                 >
-                    {ring.icon === null ? ringMap[index].icon : ring.icon}
+                    {ring.icon === undefined ? <SymbolView name={ringMap[index].icon} tintColor="black" weight={"bold"} size={iconSizesByRingCount[ringInfo.length-1]} /> : ring.icon}
                 </View>
             )))
         }
