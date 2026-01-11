@@ -48,6 +48,19 @@ export default function Home() {
         },
         placeholderData: [null]
     });
+
+    const currentGameParticipantsQuery = useQuery({
+        enabled: currentGameQuery.isSuccess,
+        queryKey: ['currentGameParticipants', currentGameQuery.data?.games?.id],
+        queryFn: async () => {
+            const  {data, error} = await supabase
+                .from('user_games')
+                .select('id, status')
+                .eq('game_id', currentGameQuery.data?.games?.id);
+            if (error) throw error;
+            return data;
+        }
+    })
     if (currentGameQuery.data) {
     }
 
@@ -69,7 +82,7 @@ ${formatDateRange(currentGameQuery.data?.games?.start_date, currentGameQuery.dat
                         <GameWeeklyOverview currentGame={currentGameQuery.data}/>
                         <StepSyncer userId={session.user.id}/>
                         <StepInformation currentGame={currentGameQuery.data}/>
-                        <GameInfo game={currentGameQuery.data?.games}/></>
+                        <GameInfo game={currentGameQuery.data?.games} participants={currentGameParticipantsQuery.data}/></>
                 )
                 : <Text style={{color: colors.label.primary}}>You are not currently in a game. Join a game to start
                     tracking your steps!</Text>}
@@ -78,7 +91,9 @@ ${formatDateRange(currentGameQuery.data?.games?.start_date, currentGameQuery.dat
 }
 
 
-const GameInfo = ({game}) => {
+const GameInfo = ({game, participants}) => {
+    const activeParticipants = participants?.filter(p => p.status === 'joined' || p.status === 'won').length;
+    const totalParticipants = participants?.filter(p => p.status !== 'warmup_forfeited').length;
     return (<View style={{
         width: '100%',
         display: 'flex',
@@ -89,8 +104,8 @@ const GameInfo = ({game}) => {
     }}>
 
         <InfoBit title='Your Bet' value={`$${game?.entry_cost}`}/>
-        <InfoBit title='Game Pot' value='$15,680'/>
-        <InfoBit title='Players In Game' value='315' total='392'/>
+        <InfoBit title='Game Pot' value={`$${(game?.entry_cost * totalParticipants).toLocaleString()}`}/>
+        <InfoBit title='Players In Game' value={activeParticipants} total={totalParticipants}/>
     </View>)
 }
 
