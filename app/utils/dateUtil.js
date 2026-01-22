@@ -23,13 +23,17 @@ export const formatDateRange = (startDateString, endDateString) => {
     const startDate = parseDateWithoutTimezone(startDateString);
     const endDate = parseDateWithoutTimezone(endDateString);
 
+    // Treat the provided endDateString as exclusive: the last included day is endDate - 1 day
+    const displayEndDate = new Date(endDate);
+    displayEndDate.setDate(displayEndDate.getDate() - 1);
+
     const startDateFormattedString = startDate.toLocaleDateString(undefined, {
         month: "short",
         day: "numeric",
     });
 
-    const endDateStringMonth = (startDate.getMonth() === endDate.getMonth()) ? undefined : "short";
-    const endDateFormattedString = endDate.toLocaleDateString(undefined, {
+    const endDateStringMonth = (startDate.getMonth() === displayEndDate.getMonth()) ? undefined : "short";
+    const endDateFormattedString = displayEndDate.toLocaleDateString(undefined, {
         month: endDateStringMonth,
         day: "numeric",
     });
