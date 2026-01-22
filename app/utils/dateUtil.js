@@ -1,14 +1,39 @@
+const parseDateWithoutTimezone = (input) => {
+    // Accept Date objects through
+    if (input instanceof Date) return input;
+
+    if (!input) return new Date(input);
+
+    // Match YYYY-MM-DD or YYYY/MM/DD (date-only)
+    const isoDash = /^(\d{4})-(\d{2})-(\d{2})$/;
+    const isoSlash = /^(\d{4})\/(\d{2})\/(\d{2})$/;
+
+    let m = isoDash.exec(input) || isoSlash.exec(input);
+    if (m) {
+        const [, year, month, day] = m;
+        // Construct in local timezone so the calendar date is preserved across timezones
+        return new Date(Number(year), Number(month) - 1, Number(day));
+    }
+
+    // Fallback for full datetime strings (will use normal Date parsing)
+    return new Date(input);
+}
+
 export const formatDateRange = (startDateString, endDateString) => {
-    const startDate = new Date(startDateString);
-    const endDate = new Date(endDateString);
+    const startDate = parseDateWithoutTimezone(startDateString);
+    const endDate = parseDateWithoutTimezone(endDateString);
+
+    // Treat the provided endDateString as exclusive: the last included day is endDate - 1 day
+    const displayEndDate = new Date(endDate);
+    displayEndDate.setDate(displayEndDate.getDate() - 1);
 
     const startDateFormattedString = startDate.toLocaleDateString(undefined, {
         month: "short",
         day: "numeric",
     });
 
-    const endDateStringMonth = (startDate.getMonth() === endDate.getMonth()) ? undefined : "short";
-    const endDateFormattedString = endDate.toLocaleDateString(undefined, {
+    const endDateStringMonth = (startDate.getMonth() === displayEndDate.getMonth()) ? undefined : "short";
+    const endDateFormattedString = displayEndDate.toLocaleDateString(undefined, {
         month: endDateStringMonth,
         day: "numeric",
     });
@@ -16,5 +41,7 @@ export const formatDateRange = (startDateString, endDateString) => {
 }
 
 export const getWeekDifference = (start, end) => {
-    return (new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24 * 7);
+    const s = parseDateWithoutTimezone(start);
+    const e = parseDateWithoutTimezone(end);
+    return (e - s) / (1000 * 60 * 60 * 24 * 7);
 }
