@@ -49,7 +49,7 @@ function StepInformation({ currentGame }) {
     // })
     return <>
         <View style={{ paddingVertical: 40 }}>
-            <Ring size='300' variant="large"
+            <Ring size='275' variant="large"
                   ringInfo={
 
                       goal.map(x => x !== null ? ({fill: pastStepCount / x * 100, dimmed: false}) : null)
