@@ -24,7 +24,7 @@ export const ringMap = [
 export const iconSizesByRingCount = [38,30,22];
 export const trackWidthByRingCount = {
     large: [
-        60,
+        56,
         48,
     ],
     small: [
