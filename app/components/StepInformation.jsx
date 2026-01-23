@@ -70,7 +70,7 @@ function StepInformation({ currentGame }) {
         </View>
         <Text style={{
             color: colors.label.primary,
-            fontSize: "24",
+            fontSize: "20",
             width: "100%",
             paddingHorizontal: "20",
             paddingTop: "0"

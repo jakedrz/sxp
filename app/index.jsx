@@ -111,8 +111,8 @@ const GameInfo = ({game, participants}) => {
 
 const InfoBit = ({title, value, total = undefined}) => {
     return (<View>
-        <Text style={{color: colors.label.primary, fontWeight: '700', fontSize: '14'}}>{title.toUpperCase()}</Text>
-        <Text style={{color: colors.label.secondary, fontSize: '24', fontFamily: 'ui-rounded'}}>{value}{total ? ((<><Text
-            style={{color: colors.label.tertiary, fontSize: '20'}}> of </Text>{total}</>)) : null}</Text>
+        <Text style={{color: colors.label.secondary, fontWeight: '700', fontSize: '14'}}>{title.toUpperCase()}</Text>
+        <Text style={{color: colors.label.primary, fontSize: '24', fontFamily: 'ui-rounded'}}>{value}{total ? ((<><Text
+            style={{color: colors.label.secondary, fontSize: '20'}}> of </Text>{total}</>)) : null}</Text>
     </View>)
 }
