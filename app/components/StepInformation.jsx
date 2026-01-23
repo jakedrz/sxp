@@ -48,7 +48,7 @@ function StepInformation({ currentGame }) {
     //     icon: <SymbolView name={ringColors.icon} tintColor="black" weight={"bold"} size={38} />}
     // })
     return <>
-        <View style={{ paddingVertical: 40 }}>
+        <View style={{ paddingVertical: 30 }}>
             <Ring size='275' variant="large"
                   ringInfo={
 

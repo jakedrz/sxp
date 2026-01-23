@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState, useCallback} from 'react';
 import {Dimensions, FlatList, Text, View} from 'react-native';
 import {colors} from "../constants/colors";
 import {Ring} from "./HealthRings/Ring/Ring";
@@ -11,6 +11,9 @@ export const GameWeeklyOverview = ({currentGame}) => {
     const weeks = userGameStandingQuery.data || [];
     const computedInitialIndex = Math.max(0, weeks.findIndex(w => w.some(day => isDateToday(day.date))));
 
+    // track current visible week index (for external label)
+    const [visibleWeekIndex, setVisibleWeekIndex] = useState(computedInitialIndex);
+
     useEffect(() => {
         // Scroll when data becomes available
         if (!weeks.length || !flatListRef.current) return;
@@ -18,11 +21,23 @@ export const GameWeeklyOverview = ({currentGame}) => {
         if (idx >= 0) {
             try {
                 flatListRef.current.scrollToIndex({index: idx, animated: false});
+                setVisibleWeekIndex(idx);
             } catch (e) {
                 // fallback: ignore if layout not ready
             }
         }
     }, [weeks]);
+
+    // viewability callback to update visibleWeekIndex when page changes
+    const viewabilityConfig = useRef({itemVisiblePercentThreshold: 50});
+    const onViewableItemsChanged = useRef(({viewableItems}) => {
+        if (!viewableItems || viewableItems.length === 0) return;
+        const first = viewableItems[0];
+        if (typeof first.index === 'number') {
+            setVisibleWeekIndex(first.index);
+        }
+    });
+
     const goal = [
         currentGame?.games?.game_types?.goal_light,
         currentGame?.games?.game_types?.goal_medium,
@@ -36,52 +51,46 @@ export const GameWeeklyOverview = ({currentGame}) => {
             showsHorizontalScrollIndicator={false}
             ref={flatListRef}
             data={userGameStandingQuery.data}
-            renderItem={({item}) => <Week days={item} goal={goal}/>}
+            renderItem={({item, index}) => <Week days={item} goal={goal} />}
             keyExtractor={(item, index) => String(index)}
             initialScrollIndex={computedInitialIndex}
             getItemLayout={(_, index) => ({length: screenWidth, offset: screenWidth * index, index})}
+            onViewableItemsChanged={onViewableItemsChanged.current}
+            viewabilityConfig={viewabilityConfig.current}
         />
+        {/* external centered label beneath the scrolling weeks */}
+        <Text style={{marginTop: 8, textAlign: 'center', fontSize: 14, color: colors.label.tertiary, fontVariant: 'tabular-nums'}}>
+            {`Week ${Math.max(1, visibleWeekIndex + 1)} of ${Math.max(0, weeks.length)}`}
+        </Text>
     </View>
 }
 
 const Week = ({days, goal}) => {
     const screenWidth = Dimensions.get('window').width;
-    console.log(goal.map(x => x))
+    // center container for page width; contains the horizontal rings row (label moved to parent)
     return <View style={{
-        flexDirection: 'row',
-        borderColor: 'green',
-        borderWidth: 0,
         width: screenWidth,
-        justifyContent: 'space-around',
         paddingHorizontal: 5,
-        marginTop: 8
+        marginTop: 8,
+        alignItems: 'center'
     }}>
-        {days.map((day, i) =>
-            // <Ring size={40} trackWidth={5} trackPadding={2} //good for 2 rings
-
-            <View key={day.date} style={{alignItems: 'center'}}>
-                <DayLabel date={day.date} goalMet={day.goalMet}/>
-                <Ring size={38} variant="small"//good for 1 ring
-                      ringInfo={
-
-                          goal.map(x => x !== null ? ({fill: day.steps / x * 100, dimmed: false, icon: null}) : null)
-
-                                  //     // dimmed: !day.goalMet
-                                  //     //   },
-                                  //     //   {
-                                  //     //       bgColor: colors.ring.secondary.dimmed,
-                                  //     //       gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                                  //     //       fill: 80,
-                                  //     // },
-                                  //     // {
-                                  //     //     bgColor: colors.ring.secondary.dimmed,
-                                  //     //     gradient: { start: colors.ring.secondary.base, end: colors.ring.secondary.lighter },
-                                  //     //     fill: 70,
-
+        <View style={{
+            flexDirection: 'row',
+            borderColor: 'green',
+            borderWidth: 0,
+            width: '100%',
+            justifyContent: 'space-around'
+        }}>
+            {days.map((day, i) =>
+                <View key={day.date} style={{alignItems: 'center'}}>
+                    <DayLabel date={day.date} goalMet={day.goalMet}/>
+                    <Ring size={38} variant="small"
+                          ringInfo={
+                              goal.map(x => x !== null ? ({fill: day.steps / x * 100, dimmed: false, icon: null}) : null)
                           }/>
-
-            </View>
-        )}
+                </View>
+            )}
+        </View>
     </View>
 }
 
