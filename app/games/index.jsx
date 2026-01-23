@@ -117,13 +117,7 @@ const GameCard = ({id, game, showButton=true}) => {
     const {title, entry_cost: entry, players, pot, start_date: startDate, end_date: endDate} = game;
     const daysUntilStart = Math.floor((new Date(startDate) - new Date()) / (1000 * 60 * 60 * 24));
     const router = useRouter();
-    // id={g.id}
-    // title={g.title ?? 'Untitled'}
-    // entry={g.entry_cost ?? 0}
-    // players={g.players ?? 0}
-    // pot={g.pot ?? '0'}
-    // startDate={g.start_date}
-    // endDate={g.end_date}
+
     return (
         <View style={{
             minHeight: '200',

@@ -43,5 +43,11 @@ export const formatDateRange = (startDateString, endDateString) => {
 export const getWeekDifference = (start, end) => {
     const s = parseDateWithoutTimezone(start);
     const e = parseDateWithoutTimezone(end);
-    return (e - s) / (1000 * 60 * 60 * 24 * 7);
+
+    // Compute difference using UTC day boundaries to avoid DST shifts
+    const utcStart = Date.UTC(s.getFullYear(), s.getMonth(), s.getDate());
+    const utcEnd = Date.UTC(e.getFullYear(), e.getMonth(), e.getDate());
+    const days = (utcEnd - utcStart) / (1000 * 60 * 60 * 24);
+
+    return days / 7;
 }
