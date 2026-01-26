@@ -4,7 +4,7 @@ import {colors} from "../constants/colors";
 import {Ring} from "./HealthRings/Ring/Ring";
 import {useGetUserGameStandingQuery} from "../hooks/useGetUserGameStandingQuery";
 
-export const GameWeeklyOverview = ({currentGame}) => {
+export const GameWeeklyOverview = ({currentGame, style}) => {
     const userGameStandingQuery = useGetUserGameStandingQuery(currentGame?.id, true);
     const flatListRef = useRef(null);
     const screenWidth = Dimensions.get('window').width;
@@ -29,7 +29,7 @@ export const GameWeeklyOverview = ({currentGame}) => {
         currentGame?.games?.game_types?.goal_heavy
     ].filter(x => x !== null);
 
-    return <View style={{borderColor: 'red', borderWidth: 0, width: '100%', minHeight: 72}}>
+    return <View style={[style, {width: '100%', minHeight: 72}]}>
         <FlatList
             pagingEnabled
             horizontal
