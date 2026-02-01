@@ -71,23 +71,24 @@ export default function Home() {
                 alignItems: "center",
                 backgroundColor: colors.background.primary,
                 paddingTop: 55,
+                paddingBottom: 55,
                 borderColor: 'orange',
-                borderWidth: 1,
+                borderWidth: 0,
             }}
         >
-            <View style={{height: '100%', flex: 1}}><PageHeader title="Home" subtitle={currentGameQuery.data?.games?.title}
+            <View style={{height: '100%', flex: 1, borderColor: 'magenta', borderWidth: 0}}><PageHeader title="Home" subtitle={currentGameQuery.data?.games?.title}
                            gameInfo={currentGameQuery.data?.games ? (`${currentGameQuery.data?.games?.game_types?.title}
 ${formatDateRange(currentGameQuery.data?.games?.start_date, currentGameQuery.data?.games?.end_date)}`) : null}/>
 
                 {currentGameQuery.data?.games ? (
-                        <View style={{height: '100%', flex: 1, borderWidth: 2, borderColor: 'yellow', justifyContent: 'flex-end'}}>
+                        <View style={{height: '100%', flex: 1, borderWidth: 0, borderColor: 'yellow', justifyContent: 'space-around'}}>
                             <GameWeeklyOverview currentGame={currentGameQuery.data}
-                                                style={{borderColor: 'red', borderWidth: 1}}/>
+                                                style={{borderColor: 'red', borderWidth: 0}}/>
                             <StepSyncer userId={session.user.id}/>
                             <StepInformation currentGame={currentGameQuery.data}
-                                             style={{borderColor: 'green', borderWidth: 1}}/>
+                                             style={{borderColor: 'green', borderWidth: 0}}/>
                             <GameInfo game={currentGameQuery.data?.games} participants={currentGameParticipantsQuery.data}
-                                      style={{borderColor: 'blue', borderWidth: 1, marginTop: 0,}}/>
+                                      style={{borderColor: 'blue', borderWidth: 0, marginTop: 0,}}/>
                         </View>
                     )
                     : <Text style={{color: colors.label.primary}}>You are not currently in a game. Join a game to start
