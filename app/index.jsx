@@ -53,7 +53,7 @@ export default function Home() {
         enabled: currentGameQuery.isSuccess,
         queryKey: ['currentGameParticipants', currentGameQuery.data?.games?.id],
         queryFn: async () => {
-            const  {data, error} = await supabase
+            const {data, error} = await supabase
                 .from('user_games')
                 .select('id, status')
                 .eq('game_id', currentGameQuery.data?.games?.id);
@@ -71,37 +71,38 @@ export default function Home() {
                 alignItems: "center",
                 backgroundColor: colors.background.primary,
                 paddingTop: 55,
+                paddingBottom: 55,
             }}
         >
-            <PageHeader title="Home" subtitle={currentGameQuery.data?.games?.title}
-                        gameInfo={currentGameQuery.data?.games ? (`${currentGameQuery.data?.games?.game_types?.title}
+            <View style={{height: '100%', flex: 1}}><PageHeader title="Home" subtitle={currentGameQuery.data?.games?.title}
+                           gameInfo={currentGameQuery.data?.games ? (`${currentGameQuery.data?.games?.game_types?.title}
 ${formatDateRange(currentGameQuery.data?.games?.start_date, currentGameQuery.data?.games?.end_date)}`) : null}/>
 
-            {currentGameQuery.data?.games ? (
-                    <>
-                        <GameWeeklyOverview currentGame={currentGameQuery.data}/>
-                        <StepSyncer userId={session.user.id}/>
-                        <StepInformation currentGame={currentGameQuery.data}/>
-                        <GameInfo game={currentGameQuery.data?.games} participants={currentGameParticipantsQuery.data}/></>
-                )
-                : <Text style={{color: colors.label.primary}}>You are not currently in a game. Join a game to start
-                    tracking your steps!</Text>}
+                {currentGameQuery.data?.games ? (
+                        <View style={{height: '100%', flex: 1, justifyContent: 'space-around'}}>
+                            <GameWeeklyOverview currentGame={currentGameQuery.data}/>
+                            <StepSyncer userId={session.user.id}/>
+                            <StepInformation currentGame={currentGameQuery.data}/>
+                            <GameInfo game={currentGameQuery.data?.games} participants={currentGameParticipantsQuery.data}/>
+                        </View>
+                    )
+                    : <Text style={{color: colors.label.primary}}>You are not currently in a game. Join a game to start
+                        tracking your steps!</Text>}</View>
         </SafeAreaView>
     );
 }
 
 
-const GameInfo = ({game, participants}) => {
+const GameInfo = ({game, participants, style}) => {
     const activeParticipants = participants?.filter(p => p.status === 'joined' || p.status === 'won').length;
     const totalParticipants = participants?.filter(p => p.status !== 'warmup_forfeited').length;
-    return (<View style={{
+    return (<View style={[{
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 20,
-        marginTop: 20
-    }}>
+    }, style]}>
 
         <InfoBit title='Your Bet' value={`$${game?.entry_cost}`}/>
         <InfoBit title='Game Pot' value={`$${(game?.entry_cost * totalParticipants).toLocaleString()}`}/>

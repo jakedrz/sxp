@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "sxp",
-    "slug": "sxp",
+    "slug": "sxp-ui",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -43,6 +43,19 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "01a603ee-d73d-40c0-88ec-0c5d56f2c2cb"
+      }
+    },
+    "owner": "sxp-22",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/01a603ee-d73d-40c0-88ec-0c5d56f2c2cb"
     }
   }
 }
